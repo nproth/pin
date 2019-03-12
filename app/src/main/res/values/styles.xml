@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowBackground">@color/activityBackground</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+        <!--<item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>-->
+
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+
+        <!--<item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>-->
+    </style>
+
+    <style name="AppAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="WindowAnimationStyle">
+        <item name="android:windowEnterAnimation">@anim/activity_enter</item>
+        <item name="android:windowExitAnimation">@anim/activity_exit</item>
+    </style>
+
+</resources>

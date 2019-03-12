@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="note_text_hint">Neue Notiz</string>
+
+    <string name="channel_name">Notizen</string>
+    <string name="channel_description">Zeigt Notizen in der Benachrichtigungsleiste</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d Notiz</item>
+        <item quantity="other">%d Notizen</item>
+    </plurals>
+
+    <string name="notification_summary_summary">+%d weitere</string>
+
+    <string name="action_delete">Löschen</string>
+    <string name="action_snooze">%1$s Verbergen</string>
+    <string name="action_edit">Bearbeiten</string>
+
+    <string name="toast_pin_dismissed">Erinnerung in %1$s</string>
+
+    <string name="title_battery_optimization">Entschuldigung</string>
+
+    <string name="warn_battery_optimization">Ich konnte die Notizen nicht nach dem Start anzeigen. Es könnte helfen, einige Energiespar-Optionen für diese App auszuschalten.</string>
+
+    <string name="dialog_acknowledged">Ok</string>
+    <string name="dialog_never_again">Nie wieder zeigen</string>
+    <string name="dialog_more_info">Weitere Informationen</string>
+</resources>

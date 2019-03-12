@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate android:fromYDelta="0%" android:toYDelta="-3%" android:interpolator="@android:anim/decelerate_interpolator" android:startOffset="0" android:duration="35" android:fillAfter="false" android:fillEnabled="true"/>
+    <translate android:fromYDelta="-3%" android:toYDelta="3%" android:interpolator="@android:anim/accelerate_decelerate_interpolator" android:startOffset="35" android:duration="70" android:fillAfter="false" android:fillBefore="false" android:fillEnabled="true"/>
+    <translate android:fromYDelta="3%" android:toYDelta="0%" android:interpolator="@android:anim/decelerate_interpolator" android:startOffset="105" android:duration="35" android:fillBefore="false" android:fillEnabled="true"/>
+
+    <translate android:fromYDelta="0%" android:toYDelta="-3%" android:interpolator="@android:anim/decelerate_interpolator" android:startOffset="140" android:duration="35" android:fillAfter="false" android:fillEnabled="true"/>
+    <translate android:fromYDelta="-3%" android:toYDelta="3%" android:interpolator="@android:anim/accelerate_decelerate_interpolator" android:startOffset="175" android:duration="70" android:fillAfter="false" android:fillBefore="false" android:fillEnabled="true"/>
+    <translate android:fromYDelta="3%" android:toYDelta="0%" android:interpolator="@android:anim/decelerate_interpolator" android:startOffset="245" android:duration="35" android:fillBefore="false" android:fillEnabled="true"/>
+</set>

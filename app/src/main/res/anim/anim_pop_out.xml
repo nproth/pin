@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"  android:interpolator="@android:interpolator/bounce"
+    android:duration="@android:integer/config_mediumAnimTime" android:fillAfter="true" android:fillEnabled="true">
+    <scale android:fromXScale="100%" android:fromYScale="100%" android:toXScale="10%" android:toYScale="10%" android:pivotX="50%" android:pivotY="50%" android:fillAfter="true" android:fillEnabled="true"/>
+    <alpha android:fromAlpha="1.0" android:toAlpha="0" android:fillAfter="true" android:fillEnabled="true"/>
+</set>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">p!n</string>
+    <string name="note_text_hint">Your note</string>
+
+    <string name="channel_name">Notes</string>
+    <string name="channel_description">Pins your saved notes to the notification drawer.</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d pin</item>
+        <item quantity="other">%d pins</item>
+    </plurals>
+
+    <string name="notification_summary_summary">+%d more</string>
+
+    <string name="text_default_button_snooze_duration">-:--</string>
+    <string name="ftext_button_snooze_duration">%1$01d:%2$02d</string>
+
+    <string name="action_delete">Done</string>
+    <string name="action_snooze">Snooze %1$s</string>
+    <string name="action_edit">Edit</string>
+
+    <string name="toast_pin_dismissed">Snoozed for %1$s</string>
+
+    <string name="symbol_time_seconds">s</string>
+    <string name="symbol_time_minutes">m</string>
+    <string name="symbol_time_hours">h</string>
+    <string name="symbol_time_days">d</string>
+
+    <string name="title_battery_optimization">I\'m sorry</string>
+
+    <string name="warn_battery_optimization">I can\'t show your pins at startup. It might help to disable battery optimizations for this app.</string>
+
+    <string name="dialog_acknowledged">Ok</string>
+    <string name="dialog_never_again">Never show again</string>
+    <string name="dialog_more_info">More information</string>
+
+</resources>
