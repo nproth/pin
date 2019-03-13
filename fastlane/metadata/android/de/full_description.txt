@@ -6,6 +6,7 @@ Eine minimalistische Notizen App - der digitale Knoten im Taschentuch:
 <li>Lösche nicht mehr benötigte Pins</li>
 <li>Verstecke Notizen für eine bestimmte Zeit</li>
 </ul>
+
 Die App ist in modernem <b>Material Design</b> gehalten.
 
 <b>Troubleshooting</b>
