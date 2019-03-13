@@ -5,10 +5,10 @@ Eine minimalistische Notizen App - der digitale Knoten im Taschentuch:
 <li>Bereits geschriebene Erinnerungen lassen sich bearbeiten</li>
 <li>Lösche nicht mehr benötigte Pins</li>
 <li>Verstecke Notizen für eine bestimmte Zeit</li>
-<ul>
+</ul>
 Die App ist in modernem <b>Material Design</b> gehalten.
 
-<h6>Troubleshooting</h6>
+<b>Troubleshooting</b>
 
 Auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten, da einige Hersteller extreme Energiesparmaßnahmen einbauen.
 In diesem Fall könnte es helfen, "Autostart" zu aktivieren oder einige Energiespar-Einstellungen für diese App auszuschalten.
