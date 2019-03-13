@@ -6,7 +6,7 @@ A minimalistic notetaking app to organize your day:
 <li>Delete them when you're done</li>
 <li>Hide them for a spezified amount of time</li>
 <ul>
-The app was build with modern <li>Material Design</li> language in mind.
+The app was build with modern <b>Material Design</b> language in mind.
 
 <h6>Troubleshooting</h6>
 
