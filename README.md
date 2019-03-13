@@ -1,7 +1,7 @@
 # p!n
 ![App Icon](app/src/main/res/mipmap-hdpi/ic_launcher.png)
 
-A minimalistic notetaking app to organize your day:
+A minimalistic note-taking app to organize your day:
 
 * Take notes and pin them to your phone's notification area
 * Edit them in case you've got something wrong
