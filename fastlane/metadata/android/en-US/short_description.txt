@@ -1,1 +1,1 @@
-A minimalistic notetaking app to organize your day.
+A minimalistic note-taking app with modern design.
