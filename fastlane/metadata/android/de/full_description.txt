@@ -13,4 +13,4 @@ Die App ist in modernem <b>Material Design</b> gehalten.
 Auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten, da einige Hersteller extreme Energiesparmaßnahmen einbauen.
 In diesem Fall könnte es helfen, "Autostart" zu aktivieren oder einige Energiespar-Einstellungen für diese App auszuschalten.
 
-Eine Anlaufstelle für mehr Informationen habe ich <a href="https://dontkillmyapp.com">hier</a> gefunden.
+Mehr Informationen habe ich z.B. <a href="https://dontkillmyapp.com">hier</a> gefunden.
