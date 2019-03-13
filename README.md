@@ -6,7 +6,7 @@ A minimalistic note-taking app to organize your day:
 * Take notes and pin them to your phone's notification area
 * Edit them in case you've got something wrong
 * Delete them when you're done
-* Hide them for a spezified amount of time
+* Hide them for a spezific amount of time
 
 The app was built with modern __Material Design__ language in mind.
 
