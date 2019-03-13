@@ -5,10 +5,10 @@ A minimalistic notetaking app to organize your day:
 <li>Edit them in case you've got something wrong</li>
 <li>Delete them when you're done</li>
 <li>Hide them for a spezified amount of time</li>
-<ul>
+</ul>
 The app was build with modern <b>Material Design</b> language in mind.
 
-<h6>Troubleshooting</h6>
+<b>Troubleshooting</b>
 
 On some devices <b>p!n</b> may not be able to start in background because of agressive energy saving implemented by the manufacturer.
 In this case try to enable 'Autostart' or disable some battery optimizations for this app.
