@@ -8,7 +8,7 @@ A minimalistic notetaking app to organize your day:
 * Delete them when you're done
 * Hide them for a spezified amount of time
 
-The app was build with modern __Material Design__ language in mind.
+The app was built with modern __Material Design__ language in mind.
 
 ## Troubleshooting
 
