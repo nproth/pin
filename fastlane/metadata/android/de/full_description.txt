@@ -1,4 +1,4 @@
-﻿Eine minimalistische Notiz-App - der digitale Knoten im Taschentuch:
+﻿Eine minimalistische Notiz-App, die Erinnerungen in der Benachrichtigungsleiste speichert:
 
 <ul>
 <li>Pinne Notizen an die Benachrichtigungsleiste</li>
@@ -9,9 +9,11 @@
 
 Die App ist in modernem <b>Material Design</b> gehalten.
 
+Die Notizen werden zusätzlich in einer Datenbank gespeichert und bleiben nach einem Neustart erhalten.
+
 <b>Troubleshooting</b>
 
-Auf manchen Geräten kann <b>p!n</b> wegen vom Hersteller eingebauten Energiesparmaßnahmen nicht im Hintergrund starten.
-In diesem Fall kann es helfen, "Autostart" zu aktivieren oder Akku-Optimierungen für diese App auszuschalten.
+Sollten die Notizen nach einem Neustart nicht direkt angezeigt werden, öffne die App, denn auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten.
+Veruche in diesem Fall "Autostart" zu aktivieren oder Akku-Optimierungen für diese App auszuschalten.
 
-Mehr Informationen sind z.B. <a href="https://dontkillmyapp.com">hier</a> zu finden.
+Mehr Informationen zu diesem Thema sind z.B. <a href="https://dontkillmyapp.com">hier</a> zu finden.

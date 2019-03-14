@@ -1,1 +1,1 @@
-A minimalistic note-taking app with modern design.
+Pin notes to the notification area.

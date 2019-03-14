@@ -1,1 +1,1 @@
-Eine minimalistische Notiz-App in modernem Design.
+Pinne Notizen an die Benachrichtigungsleiste.

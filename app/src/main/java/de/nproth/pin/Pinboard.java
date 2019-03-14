@@ -65,7 +65,7 @@ public final class Pinboard {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String cname = mContext.getString(R.string.channel_name);
             String cinfo = mContext.getString(R.string.channel_description);
-            int imp = NotificationManager.IMPORTANCE_DEFAULT;//non intrusive TODO adjust importance
+            int imp = NotificationManager.IMPORTANCE_LOW;//non intrusive
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, cname, imp);
             channel.setDescription(cinfo);
             channel.setShowBadge(false);//We want no badges for the pins
@@ -85,7 +85,6 @@ public final class Pinboard {
 
         try {
 
-            String sLastCheck = Long.toString(mLastChecked);
             //query all rows that were modified or created since we last checked the db, sorted by time of creation
             db = mContext.getContentResolver().query(NotesProvider.Notes.NOTES_URI, new String[]{NotesProvider.Notes._ID, NotesProvider.Notes.TEXT, NotesProvider.Notes.CREATED, NotesProvider.Notes.MODIFIED, NotesProvider.Notes.WAKE_UP},
                     where, wargs, NotesProvider.Notes.CREATED + " DESC");
@@ -127,6 +126,7 @@ public final class Pinboard {
                                 .setWhen(db.getLong(2))//XXX hope this method accepts UTC timestamps; it seemingly does; show time of creation here utilising the db's 'created' column
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                 .setOnlyAlertOnce(true)//TODO alert user when a notification woke up
+                                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                                 //Add actions to delete or snooze note, don't use icons here
                                 .addAction(0, mContext.getString(R.string.action_delete), PendingIntent.getBroadcast(mContext, 0, idelete, 0))
                                 .addAction(0, mContext.getString(R.string.action_snooze, new Timespan(mContext, PreferenceManager.getDefaultSharedPreferences(mContext).getLong(NoteActivity.PREFERENCE_SNOOZE_DURATION, NoteActivity.DEFAULT_SNOOZE_DURATION)).toString()), PendingIntent.getBroadcast(mContext, 0, isnooze, 0))
@@ -212,6 +212,7 @@ public final class Pinboard {
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setWhen(when)
                             .setOnlyAlertOnce(true)
+                            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                             .setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(mContext, NoteActivity.class), 0))//show NoteActivity when user clicks on note.
                             .setGroup(NOTES_GROUP)
                             .setGroupSummary(true)

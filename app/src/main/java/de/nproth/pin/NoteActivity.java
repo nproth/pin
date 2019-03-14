@@ -31,12 +31,12 @@ import de.nproth.pin.util.Timespan;
  */
 public class NoteActivity extends AppCompatActivity {
 
-    public static final String PREFERENCE_FIRST_RUN = "first_run";
+    public static final String PREFERENCE_APP_VERSION = "app_version";
     public static final String PREFERENCE_WARN_USER = "warn_user";
 
     public static final String PREFERENCE_SNOOZE_DURATION = "snooze_duration";
     public static final long DEFAULT_SNOOZE_DURATION = 30 * 60 * 1000; //30min in millis
-        //10 * 1000;//10s //T.ODO reset
+
     private EditText NoteInputField;
     private ImageButton SaveNoteButton;
     private Button SnoozeDurationButton;
@@ -192,17 +192,17 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     public void updateAlertButton() {
-        Log.d("NoteActivity", (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_FIRST_RUN, true)? "" : "Not ") + "First run");
+        Log.d("NoteActivity", (PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_APP_VERSION, 0) != BuildConfig.VERSION_CODE? "" : "Not ") + "First run");
         Log.d("NoteActivity", "Should " + (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_WARN_USER, true)? "" : "not ") + "warn user");
         Log.d("NoteActivity", "Boot completed intent was " + (LifecycleWatcher.hasBootReceived()? "" : "not ") + "received");
 
-        //Warn user if app was not started on boot and this is not it's first run
-        if((!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_FIRST_RUN, true))
+        //Warn user if app was not started on boot and this is not it's first run after installation or update
+        if(PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_APP_VERSION, 0) == BuildConfig.VERSION_CODE
                 && PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_WARN_USER, true) && !LifecycleWatcher.hasBootReceived()) {
             //so we have been running before and were not notified on boot -> prompt user
             AlertButton.startAnimation(mPopInAnim);
         } else {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(PREFERENCE_FIRST_RUN, false).apply();
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(PREFERENCE_APP_VERSION, BuildConfig.VERSION_CODE).apply();
             LifecycleWatcher.informBootReceived();//Don't display any warnings until next (first) reboot
             if(AlertButton.getVisibility() != View.GONE)
                 AlertButton.startAnimation(mPopOutAnim);
@@ -254,7 +254,7 @@ public class NoteActivity extends AppCompatActivity {
         //Testing
         if(BuildConfig.DEBUG && "#alert".equals(txt)) {
             LifecycleWatcher.reset();
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(PREFERENCE_FIRST_RUN, false).putBoolean(PREFERENCE_WARN_USER, true).apply();
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(PREFERENCE_APP_VERSION, 0).putBoolean(PREFERENCE_WARN_USER, true).apply();
             finish();
         } else if(BuildConfig.DEBUG && "#no-alert".equals(txt)) {
             LifecycleWatcher.informBootReceived();
