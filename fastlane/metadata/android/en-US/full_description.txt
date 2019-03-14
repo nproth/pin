@@ -1,17 +1,17 @@
-A minimalistic notetaking app to organize your day:
+A minimalistic note-taking app to organize your day:
 
 <ul>
 <li>Take notes and pin them to your phone's notification area</li>
-<li>Edit them in case you've got something wrong</li>
-<li>Delete them when you're done</li>
-<li>Hide them for a spezific amount of time</li>
+<li>Edit pins</li>
+<li>Delete them</li>
+<li>Hide them for a spezific period of time</li>
 </ul>
 
-The app was build with modern <b>Material Design</b> language in mind.
+The app was build with <b>Material Design</b> in mind.
 
 <b>Troubleshooting</b>
 
 On some devices <b>p!n</b> may not be able to start in background because of agressive energy saving implemented by the manufacturer.
 In this case try to enable 'Autostart' or disable some battery optimizations for this app.
 
-A good resource for more information I've found <a href="https://dontkillmyapp.com/">here</a>.
+More information can be found <a href="https://dontkillmyapp.com/">here</a>.

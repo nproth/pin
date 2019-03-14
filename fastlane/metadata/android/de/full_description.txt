@@ -1,4 +1,4 @@
-Eine minimalistische Notizen App - der digitale Knoten im Taschentuch:
+﻿Eine minimalistische Notiz-App - der digitale Knoten im Taschentuch:
 
 <ul>
 <li>Pinne Notizen an die Benachrichtigungsleiste</li>
@@ -11,7 +11,7 @@ Die App ist in modernem <b>Material Design</b> gehalten.
 
 <b>Troubleshooting</b>
 
-Auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten, da einige Hersteller extreme Energiesparmaßnahmen einbauen.
-In diesem Fall könnte es helfen, "Autostart" zu aktivieren oder einige Energiespar-Einstellungen für diese App auszuschalten.
+Auf manchen Geräten kann <b>p!n</b> wegen vom Hersteller eingebauten Energiesparmaßnahmen nicht im Hintergrund starten.
+In diesem Fall kann es helfen, "Autostart" zu aktivieren oder Akku-Optimierungen für diese App auszuschalten.
 
-Mehr Informationen habe ich z.B. <a href="https://dontkillmyapp.com">hier</a> gefunden.
+Mehr Informationen sind z.B. <a href="https://dontkillmyapp.com">hier</a> zu finden.

@@ -1,1 +1,1 @@
-Eine minimalistische Notizen App in modernem Design.
+Eine minimalistische Notiz-App in modernem Design.
