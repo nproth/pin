@@ -162,7 +162,14 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        updateAlertButton();
+        //updateAlertButton(); // TODO fix user warning popping up even if app was started on boot -> disable it as temporary fix
+
+        /**
+         * This - now hidden - alert dialog should warn users when the app was not able to receive the boot completed intent.
+         * Once the intent was received a flag is set in {@link LifecycleWatcher}. But for some reason this flag is being unset sometimes,
+         * possibly because the app is stopped in background where the flag's state (merely a static field) is lost.
+         * Disable this warning dialog entirely to avoid false positives until this is fixed and the flag is retained correctly throughout the app's lifecycle.
+         */
     }
 
     public void onAlertClicked(View v) {
@@ -192,6 +199,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     public void updateAlertButton() {
+        //Disabled as a temporary fix, see above for details
+        /*
         Log.d("NoteActivity", (PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_APP_VERSION, 0) != BuildConfig.VERSION_CODE? "" : "Not ") + "First run");
         Log.d("NoteActivity", "Should " + (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_WARN_USER, true)? "" : "not ") + "warn user");
         Log.d("NoteActivity", "Boot completed intent was " + (LifecycleWatcher.hasBootReceived()? "" : "not ") + "received");
@@ -207,6 +216,7 @@ public class NoteActivity extends AppCompatActivity {
             if(AlertButton.getVisibility() != View.GONE)
                 AlertButton.startAnimation(mPopOutAnim);
         }
+        */
     }
 
     public void onNoteSaveButtonClicked(View v) {
