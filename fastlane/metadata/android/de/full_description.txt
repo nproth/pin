@@ -7,13 +7,13 @@
 <li>Verstecke Notizen für eine bestimmte Zeit</li>
 </ul>
 
-Die App ist in modernem <b>Material Design</b> gehalten.
+Die App ist in <b>Material Design</b> gehalten.
 
 Die Notizen werden zusätzlich in einer Datenbank gespeichert und bleiben nach einem Neustart erhalten.
 
 <b>Troubleshooting</b>
 
-Sollten die Notizen nach einem Neustart nicht direkt angezeigt werden, öffne die App, denn auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten.
-Veruche in diesem Fall "Autostart" zu aktivieren oder Akku-Optimierungen für diese App auszuschalten.
+Auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten. Sollten die Notizen nach einem Neustart also nicht direkt angezeigt werden, so erscheinen sie, nachdem die App geöffnet wurde.
+Je nach Gerät hilft es auch, "Autostart" zu aktivieren, oder Akku-Optimierungen für diese Applikation auszuschalten.
 
-Mehr Informationen zu diesem Thema sind z.B. <a href="https://dontkillmyapp.com">hier</a> zu finden.
+Mehr Informationen zu diesem Thema und Maßnahmen für Geräte verschiedener Hersteller sind unter anderem <a href="https://dontkillmyapp.com">hier</a> zu finden.
