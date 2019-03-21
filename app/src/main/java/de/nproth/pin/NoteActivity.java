@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.nproth.pin.util.LifecycleWatcher;
 import de.nproth.pin.util.Timespan;
@@ -29,10 +30,7 @@ import de.nproth.pin.util.Timespan;
 /**
  * Only activity of this app. Allows the user to add or edit pins and set the snooze duration
  */
-public class NoteActivity extends AppCompatActivity {
-
-    public static final String PREFERENCE_APP_VERSION = "app_version";
-    public static final String PREFERENCE_WARN_USER = "warn_user";
+public class NoteActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     public static final String PREFERENCE_SNOOZE_DURATION = "snooze_duration";
     public static final long DEFAULT_SNOOZE_DURATION = 30 * 60 * 1000; //30min in millis
@@ -40,14 +38,11 @@ public class NoteActivity extends AppCompatActivity {
     private EditText NoteInputField;
     private ImageButton SaveNoteButton;
     private Button SnoozeDurationButton;
-    private ImageButton AlertButton;
 
     private Handler mAnimHandler;
 
     private Animation mEmptyPinAnimation;
     private Animation mPinAnimation;
-
-    private Animation mPopInAnim, mPopOutAnim;
 
     private int rowId = 0;
 
@@ -62,49 +57,11 @@ public class NoteActivity extends AppCompatActivity {
         NoteInputField = findViewById(R.id.note_input_field);
         SaveNoteButton = findViewById(R.id.note_save_button);
         SnoozeDurationButton = findViewById(R.id.snooze_duration_button);
-        AlertButton = findViewById(R.id.alert_button);
 
         mAnimHandler = new Handler(Looper.getMainLooper());
         mPinAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_input_field_pin);
 
         mEmptyPinAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_input_field_empty);
-
-        mPopInAnim = AnimationUtils.loadAnimation(this, R.anim.anim_pop_in);
-        mPopOutAnim = AnimationUtils.loadAnimation(this, R.anim.anim_pop_out);
-
-        mPopInAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                AlertButton.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        mPopOutAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                AlertButton.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
 
         NoteInputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -124,6 +81,7 @@ public class NoteActivity extends AppCompatActivity {
         Timespan span = new Timespan(this, PreferenceManager.getDefaultSharedPreferences(this).getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
         String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
         SnoozeDurationButton.setText(txt);
+        SnoozeDurationButton.setOnLongClickListener(this);
 
         Pinboard.get(this).updateAll();
 
@@ -139,7 +97,7 @@ public class NoteActivity extends AppCompatActivity {
 
         //Check whether supplied data uri (if any) is valid
         Uri uri = getIntent().getData();
-        Log.d("NoteActivity", String.format("Activity called with uri: ", uri == null? "null" : uri));
+        Log.d("NoteActivity", String.format("Activity called with uri: %s", uri == null? "null" : uri));
         if(uri != null) {
             if (TextUtils.isEmpty(uri.getLastPathSegment()) || !TextUtils.isDigitsOnly(uri.getLastPathSegment())) {
                 Log.e("NoteActivity", String.format("Invalid data uri '%s' supplied", uri));
@@ -157,66 +115,6 @@ public class NoteActivity extends AppCompatActivity {
             if(c != null)
                 c.close();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //updateAlertButton(); // TODO fix user warning popping up even if app was started on boot -> disable it as temporary fix
-
-        /**
-         * This - now hidden - alert dialog should warn users when the app was not able to receive the boot completed intent.
-         * Once the intent was received a flag is set in {@link LifecycleWatcher}. But for some reason this flag is being unset sometimes,
-         * possibly because the app is stopped in background where the flag's state (merely a static field) is lost.
-         * Disable this warning dialog entirely to avoid false positives until this is fixed and the flag is retained correctly throughout the app's lifecycle.
-         */
-    }
-
-    public void onAlertClicked(View v) {
-        AlertButton.startAnimation(mPopOutAnim);
-        //Show alert dialog
-        new AlertDialog.Builder(this, R.style.AppAlertDialogStyle)
-                .setTitle(R.string.title_battery_optimization)
-                .setMessage(R.string.warn_battery_optimization)
-                .setPositiveButton(R.string.dialog_acknowledged, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //Nothing really
-                updateAlertButton();
-            }
-        }).setNegativeButton(R.string.dialog_never_again, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                PreferenceManager.getDefaultSharedPreferences(NoteActivity.this).edit().putBoolean(PREFERENCE_WARN_USER, false).apply();
-                updateAlertButton();
-            }
-        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                updateAlertButton();
-            }
-        }).show();
-    }
-
-    public void updateAlertButton() {
-        //Disabled as a temporary fix, see above for details
-        /*
-        Log.d("NoteActivity", (PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_APP_VERSION, 0) != BuildConfig.VERSION_CODE? "" : "Not ") + "First run");
-        Log.d("NoteActivity", "Should " + (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_WARN_USER, true)? "" : "not ") + "warn user");
-        Log.d("NoteActivity", "Boot completed intent was " + (LifecycleWatcher.hasBootReceived()? "" : "not ") + "received");
-
-        //Warn user if app was not started on boot and this is not it's first run after installation or update
-        if(PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_APP_VERSION, 0) == BuildConfig.VERSION_CODE
-                && PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PREFERENCE_WARN_USER, true) && !LifecycleWatcher.hasBootReceived()) {
-            //so we have been running before and were not notified on boot -> prompt user
-            AlertButton.startAnimation(mPopInAnim);
-        } else {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(PREFERENCE_APP_VERSION, BuildConfig.VERSION_CODE).apply();
-            LifecycleWatcher.informBootReceived();//Don't display any warnings until next (first) reboot
-            if(AlertButton.getVisibility() != View.GONE)
-                AlertButton.startAnimation(mPopOutAnim);
-        }
-        */
     }
 
     public void onNoteSaveButtonClicked(View v) {
@@ -256,22 +154,32 @@ public class NoteActivity extends AppCompatActivity {
         Pinboard.get(this).updateVisible();
     }
 
+    /**
+     * Handler for long click on SetSnoozeDurationButton
+     * Wakes up all currently hidden pins
+     */
+    @Override
+    public boolean onLongClick(View v) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(NotesProvider.Notes.WAKE_UP, System.currentTimeMillis());
+
+        int updated = getContentResolver().update(Uri.parse(NotesProvider.CONTENT_URI + "/notes"), cv, NotesProvider.Notes.WAKE_UP + " <> 0 AND " + NotesProvider.Notes.TEXT + " IS NOT NULL", null);
+
+        //Show toast when notes woke up
+        if(updated > 0)
+            Toast.makeText(this, R.string.toast_show_all, Toast.LENGTH_SHORT).show();
+
+        Pinboard.get(this).updateVisible();
+        return true;
+    }
+
     private void pinNote() {
         String txt = NoteInputField.getText().toString();
         long time = System.currentTimeMillis();
 
         //Save note in Database via ContentProvider
-        //Testing
-        if(BuildConfig.DEBUG && "#alert".equals(txt)) {
-            LifecycleWatcher.reset();
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(PREFERENCE_APP_VERSION, 0).putBoolean(PREFERENCE_WARN_USER, true).apply();
-            finish();
-        } else if(BuildConfig.DEBUG && "#no-alert".equals(txt)) {
-            LifecycleWatcher.informBootReceived();
-            finish();
-        }
-        //End Testing
-        else if(!TextUtils.isEmpty(txt)) {
+        if(!TextUtils.isEmpty(txt)) {
 
             ContentValues cv = new ContentValues();
             cv.put(NotesProvider.Notes.TEXT, txt);

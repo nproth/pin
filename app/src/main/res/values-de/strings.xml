@@ -18,11 +18,13 @@
 
     <string name="toast_pin_dismissed">Erinnerung in %1$s</string>
 
+    <string name="toast_show_all">Alle sichtbar</string>
+
     <string name="title_battery_optimization">Entschuldigung</string>
 
     <string name="warn_battery_optimization">Ich konnte die Notizen nicht nach dem Start anzeigen. Es könnte helfen, einige Energiespar-Optionen für diese App auszuschalten.</string>
 
-    <string name="dialog_acknowledged">Ok</string>
+    <string name="dialog_acknowledged">OK</string>
     <string name="dialog_never_again">Nie wieder zeigen</string>
     <string name="dialog_more_info">Weitere Informationen</string>
 </resources>

@@ -133,6 +133,7 @@ public final class Pinboard {
                                 .addAction(0, mContext.getString(R.string.action_edit), PendingIntent.getActivity(mContext, 0, iedit, 0))
                                 .setContentIntent(PendingIntent.getActivity(mContext, 0, iactivity, 0))//show NoteActivity when user clicks on note.
                                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
+                                //.setOngoing(true);
 
                         isnooze.setAction(SnoozeNoteReceiver.ACTION_NOTIFICATION_DISMISSED);
                         builder.setDeleteIntent(PendingIntent.getBroadcast(mContext, 0, isnooze, 0));//snooze notification when the user dismisses it

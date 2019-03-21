@@ -9,21 +9,6 @@
     android:clickable="true"
     android:onClick="onParentLayoutClicked">
 
-    <ImageButton
-        android:id="@+id/alert_button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_warn"
-        android:background="@drawable/background_button_actionbutton"
-        android:elevation="8dp"
-        android:layout_margin="8dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onAlertClicked"
-        android:visibility="gone"
-        android:stateListAnimator="@animator/state_anim_button"/>
-
     <EditText
         android:focusedByDefault="true"
         android:nextFocusForward="@id/note_save_button"
