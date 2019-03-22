@@ -1,0 +1,5 @@
+Improved notification handling:
+
+* Make notifications persistent by long pressing 'pin'-button
+* Show hidden pins by long pressing 'timer'-button
+* Alert when notes wake up

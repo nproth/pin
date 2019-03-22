@@ -3,12 +3,14 @@ package de.nproth.pin;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -30,8 +32,9 @@ import de.nproth.pin.util.Timespan;
 /**
  * Only activity of this app. Allows the user to add or edit pins and set the snooze duration
  */
-public class NoteActivity extends AppCompatActivity implements View.OnLongClickListener {
+public class NoteActivity extends AppCompatActivity {
 
+    public static final String PREFERENCE_PERSISTENT_NOTIFICATIONS = "pref_persistent_notifications";
     public static final String PREFERENCE_SNOOZE_DURATION = "snooze_duration";
     public static final long DEFAULT_SNOOZE_DURATION = 30 * 60 * 1000; //30min in millis
 
@@ -81,9 +84,49 @@ public class NoteActivity extends AppCompatActivity implements View.OnLongClickL
         Timespan span = new Timespan(this, PreferenceManager.getDefaultSharedPreferences(this).getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
         String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
         SnoozeDurationButton.setText(txt);
-        SnoozeDurationButton.setOnLongClickListener(this);
+        SnoozeDurationButton.setOnLongClickListener(new View.OnLongClickListener() {
+            /**
+             * Handler for long click on SetSnoozeDurationButton
+             * Wakes up all currently hidden pins
+             */
+            @Override
+            public boolean onLongClick(View v) {
 
-        Pinboard.get(this).updateAll();
+                ContentValues cv = new ContentValues();
+                cv.put(NotesProvider.Notes.WAKE_UP, 0);
+
+                int updated = getContentResolver().update(Uri.parse(NotesProvider.CONTENT_URI + "/notes"), cv, NotesProvider.Notes.WAKE_UP + " <> 0 AND " + NotesProvider.Notes.TEXT + " IS NOT NULL", null);
+
+                //Show toast when notes woke up
+                if(updated > 0)
+                    Toast.makeText(NoteActivity.this, R.string.toast_show_all, Toast.LENGTH_SHORT).show();
+
+                //update silently (without notification ping)
+                Pinboard.get(NoteActivity.this).updateVisible(true);
+                return true;
+            }
+        });
+
+        SaveNoteButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NoteActivity.this);
+                boolean fixPins = !prefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, false);
+                prefs.edit().putBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, fixPins).apply();
+
+                String toast;
+                if(fixPins)
+                    toast = NoteActivity.this.getString(R.string.toast_fix_pins);
+                else
+                    toast = NoteActivity.this.getString(R.string.toast_unfix_pins);
+
+                Toast.makeText(NoteActivity.this, toast, Toast.LENGTH_SHORT).show();
+                Pinboard.get(NoteActivity.this).updateVisible(true);
+                return true;
+            }
+        });
+
+        Pinboard.get(this).updateAll(true);
 
     }
 
@@ -154,26 +197,6 @@ public class NoteActivity extends AppCompatActivity implements View.OnLongClickL
         Pinboard.get(this).updateVisible();
     }
 
-    /**
-     * Handler for long click on SetSnoozeDurationButton
-     * Wakes up all currently hidden pins
-     */
-    @Override
-    public boolean onLongClick(View v) {
-
-        ContentValues cv = new ContentValues();
-        cv.put(NotesProvider.Notes.WAKE_UP, 0);
-
-        int updated = getContentResolver().update(Uri.parse(NotesProvider.CONTENT_URI + "/notes"), cv, NotesProvider.Notes.WAKE_UP + " <> 0 AND " + NotesProvider.Notes.TEXT + " IS NOT NULL", null);
-
-        //Show toast when notes woke up
-        if(updated > 0)
-            Toast.makeText(this, R.string.toast_show_all, Toast.LENGTH_SHORT).show();
-
-        //update silently (without notification ping)
-        Pinboard.get(this).updateVisible(true);
-        return true;
-    }
 
     private void pinNote() {
         String txt = NoteInputField.getText().toString();

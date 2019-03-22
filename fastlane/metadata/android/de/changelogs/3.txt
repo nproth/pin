@@ -1,0 +1,5 @@
+Verbesserte Benachrichtigungen:
+
+* Notizen werden bei langem Drücken des 'Pin'-Buttons in der Benachrichtigunsleiste fixiert
+* Langes Drücken des 'Timer'-Buttons lässt alle verborgenen Notizen erscheinen
+* Benachrichtigungston, wenn Notizen aufwachen

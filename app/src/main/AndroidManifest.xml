@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.nproth.pin" android:versionName="1.0.1" android:versionCode="2">
+    package="de.nproth.pin">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />

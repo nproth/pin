@@ -26,6 +26,9 @@
 
     <string name="toast_show_all">Alle sichtbar</string>
 
+    <string name="toast_fix_pins">Notizen fixiert</string>
+    <string name="toast_unfix_pins">Notizen nicht fixiert</string>
+
     <string name="title_battery_optimization">Entschuldigung</string>
 
     <string name="warn_battery_optimization">Ich konnte die Notizen nicht nach dem Start anzeigen. Es könnte helfen, einige Energiespar-Optionen für diese App auszuschalten.</string>

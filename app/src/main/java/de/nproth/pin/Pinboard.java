@@ -26,6 +26,10 @@ import de.nproth.pin.util.Timespan;
  */
 public final class Pinboard {
 
+    /**
+     * Only used prior to version 1.1
+    */
+    @Deprecated
     private static final String CHANNEL_ID = "de.nproth.pin.notes";
 
     private static final String PIN_CHANNEL_ID = "de.nproth.pin.pin";
@@ -150,6 +154,9 @@ public final class Pinboard {
                                 .addAction(0, mContext.getString(R.string.action_edit), PendingIntent.getActivity(mContext, 0, iedit, 0))
                                 .setContentIntent(PendingIntent.getActivity(mContext, 0, iactivity, 0))//show NoteActivity when user clicks on note.
                                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
+                        //Make notes persistent
+                        if(PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(NoteActivity.PREFERENCE_PERSISTENT_NOTIFICATIONS, false))
+                            builder.setOngoing(true);
 
                         isnooze.setAction(SnoozeNoteReceiver.ACTION_NOTIFICATION_DISMISSED);
                         builder.setDeleteIntent(PendingIntent.getBroadcast(mContext, 0, isnooze, 0));//snooze notification when the user dismisses it
@@ -158,7 +165,6 @@ public final class Pinboard {
                             builder.setGroup(NOTES_GROUP);
 
                         Notification note = builder.build();
-                        note.flags |= NotificationCompat.FLAG_NO_CLEAR;
 
                         //And fire new / updated notification
                         mNotify.notify(db.getInt(0), note);//use cursor's _id column as id for our notification
@@ -224,7 +230,7 @@ public final class Pinboard {
                         db.moveToNext();
                     }
 
-                    Notification note = new NotificationCompat.Builder(mContext, PIN_CHANNEL_ID)
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, PIN_CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_pin_statusbar)
                             .setStyle(style)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -233,10 +239,12 @@ public final class Pinboard {
                             .setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(mContext, NoteActivity.class), 0))//show NoteActivity when user clicks on note.
                             .setGroup(NOTES_GROUP)
                             .setGroupSummary(true)
-                            .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                            .build();
+                            .setCategory(NotificationCompat.CATEGORY_REMINDER);
 
-                    mNotify.notify(SUMMARY_ID, note);
+                    if(PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(NoteActivity.PREFERENCE_PERSISTENT_NOTIFICATIONS, false))
+                        builder.setOngoing(true);
+
+                    mNotify.notify(SUMMARY_ID, builder.build());
                 } else
                     mNotify.cancel(SUMMARY_ID);
 

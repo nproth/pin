@@ -34,6 +34,9 @@
 
     <string name="toast_show_all">Show All Notes</string>
 
+    <string name="toast_fix_pins">Lock Pins</string>
+    <string name="toast_unfix_pins">Unlock Pins</string>
+
     <string name="title_battery_optimization">I\'m sorry</string>
 
     <string name="warn_battery_optimization">I can\'t show your pins at startup. It might help to disable battery optimizations for this app.</string>
