@@ -28,6 +28,9 @@ public final class Pinboard {
 
     private static final String CHANNEL_ID = "de.nproth.pin.notes";
 
+    private static final String PIN_CHANNEL_ID = "de.nproth.pin.pin";
+    private static final String WAKE_CHANNEL_ID = "de.nproth.pin.wake_up";
+
     private static final int SUMMARY_ID = 0;
 
     private static final String NOTES_GROUP = "de.nproth.pin.NOTES_GROUP";
@@ -60,21 +63,29 @@ public final class Pinboard {
             mScheduler = null;
         }
 
-        //Create notification Channel, only needed when running on android 8.0+
+        //Create notification Channels, only needed when running on android 8.0+
+
+        //We need two different priorities: we want newly created pins to be pushed silently (anything else is unbearably annoying) but we DO want the user to be notified when a snoozed notification wakes up
+        //On pre android 8.0 this is possible by using different priorities but on >=Oreo only one importance per channel is supported => use 2 channels
+        //Also I really hope that notifications from two different channels can be grouped and summarized.
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String cname = mContext.getString(R.string.channel_name);
-            String cinfo = mContext.getString(R.string.channel_description);
-            int imp = NotificationManager.IMPORTANCE_LOW;//non intrusive
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, cname, imp);
-            channel.setDescription(cinfo);
-            channel.setShowBadge(false);//We want no badges for the pins
+            //Delete old channel used in version <= 1.0.1
+            mNManager.deleteNotificationChannel(CHANNEL_ID);
+            //create two new channels
+            NotificationChannel cpin = new NotificationChannel(PIN_CHANNEL_ID, mContext.getString(R.string.channel_name_pin), NotificationManager.IMPORTANCE_LOW);
+            cpin.setShowBadge(false);
+            cpin.setDescription(mContext.getString(R.string.channel_description_pin));
+            mNManager.createNotificationChannel(cpin);
 
-            mNManager.createNotificationChannel(channel);
+            NotificationChannel cwake = new NotificationChannel(WAKE_CHANNEL_ID, mContext.getString(R.string.channel_name_wake), NotificationManager.IMPORTANCE_DEFAULT);
+            cwake.setShowBadge(false);
+            cwake.setDescription(mContext.getString(R.string.channel_description_wake));
+            mNManager.createNotificationChannel(cwake);
         }
     }
 
-    private void update(long timeNow, String where, String... wargs) {
+    private void update(long timeNow, boolean silent, String where, String... wargs) {
         final long snoozeDuration = PreferenceManager.getDefaultSharedPreferences(mContext).getLong(NoteActivity.PREFERENCE_SNOOZE_DURATION, NoteActivity.DEFAULT_SNOOZE_DURATION);
 
         long currentCheck = timeNow;
@@ -109,6 +120,8 @@ public final class Pinboard {
 
                     } else {//else update and show notification
 
+                        boolean wokeUp = wake_up > mLastChecked;
+
                         //Prepare Pending Intents to snooze or delete notification or edit the note
                         idelete = new Intent(mContext, DeleteNoteReceiver.class);
                         idelete.setData(Uri.withAppendedPath(NotesProvider.Notes.NOTES_URI, Long.toString(db.getLong(0))));
@@ -119,13 +132,17 @@ public final class Pinboard {
                         iedit = new Intent(mContext, NoteActivity.class);
                         iedit.setData(Uri.withAppendedPath(NotesProvider.Notes.NOTES_URI, Long.toString(db.getLong(0))));
 
+                        if(wokeUp)
+                            Log.d("Pinboard", "Pushing notification on wake_up channel...");
+
                         //create a notification here (previously created notifications that are still visible are just updated)
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                        //Newly created notifications are pushed silently. Pins that woke up are published on the second channel and make a noise.
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, (wokeUp && !silent)? WAKE_CHANNEL_ID : PIN_CHANNEL_ID)
                                 .setSmallIcon(R.drawable.ic_pin_statusbar)
                                 .setContentTitle(db.getString(1))//use note's text as notification's headline
                                 .setWhen(db.getLong(2))//XXX hope this method accepts UTC timestamps; it seemingly does; show time of creation here utilising the db's 'created' column
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                .setOnlyAlertOnce(true)//TODO alert user when a notification woke up
+                                .setPriority((wokeUp && !silent)? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT)
+                                .setOnlyAlertOnce(true)
                                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                                 //Add actions to delete or snooze note, don't use icons here
                                 .addAction(0, mContext.getString(R.string.action_delete), PendingIntent.getBroadcast(mContext, 0, idelete, 0))
@@ -133,7 +150,6 @@ public final class Pinboard {
                                 .addAction(0, mContext.getString(R.string.action_edit), PendingIntent.getActivity(mContext, 0, iedit, 0))
                                 .setContentIntent(PendingIntent.getActivity(mContext, 0, iactivity, 0))//show NoteActivity when user clicks on note.
                                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
-                                //.setOngoing(true);
 
                         isnooze.setAction(SnoozeNoteReceiver.ACTION_NOTIFICATION_DISMISSED);
                         builder.setDeleteIntent(PendingIntent.getBroadcast(mContext, 0, isnooze, 0));//snooze notification when the user dismisses it
@@ -142,6 +158,7 @@ public final class Pinboard {
                             builder.setGroup(NOTES_GROUP);
 
                         Notification note = builder.build();
+                        note.flags |= NotificationCompat.FLAG_NO_CLEAR;
 
                         //And fire new / updated notification
                         mNotify.notify(db.getInt(0), note);//use cursor's _id column as id for our notification
@@ -176,7 +193,7 @@ public final class Pinboard {
             }
         }
 
-        //mLastChecked = currentCheck;
+        mLastChecked = currentCheck;
 
 
         //on pre N devices our notification actions are no longer accessible when they are summarized. Just keep distinct notifications on older devices.
@@ -207,12 +224,11 @@ public final class Pinboard {
                         db.moveToNext();
                     }
 
-                    Notification note = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                    Notification note = new NotificationCompat.Builder(mContext, PIN_CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_pin_statusbar)
                             .setStyle(style)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setWhen(when)
-                            .setOnlyAlertOnce(true)
                             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                             .setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(mContext, NoteActivity.class), 0))//show NoteActivity when user clicks on note.
                             .setGroup(NOTES_GROUP)
@@ -234,23 +250,31 @@ public final class Pinboard {
     }
 
     public void updateAll() {
-        //query all rows
-        update(System.currentTimeMillis(), null);
+        updateAll(false);
     }
 
-    public void updateVisible() {
+    public void updateAll(boolean silent) {
+        //query all rows
+        update(System.currentTimeMillis(), silent, null);
+    }
+
+    public void updateVisible(boolean silent) {
         long now = System.currentTimeMillis();
         String sNow = Long.toString(now);
         //query all rows that are neither snoozed nor deleted and thus visible
-        update(now, "text IS NOT NULL AND wake_up <= ?", sNow);
+        update(now, silent, "text IS NOT NULL AND wake_up <= ?", sNow);
+    }
+
+    public void updateVisible() {
+        updateVisible(false);
     }
 
     public void updateChanged() {
         long now = System.currentTimeMillis();
         String sLastCheck = Long.toString(mLastChecked);
         //query all rows that were modified or created since we last checked the db, sorted by time of creation
-        update(now, "modified >= ? OR wake_up >= ?", sLastCheck, sLastCheck);
-        mLastChecked = now;
+        update(now, false, "modified >= ? OR wake_up >= ?", sLastCheck, sLastCheck);
+        //mLastChecked = now;
     }
 
     public static Pinboard get(Context ctx) {

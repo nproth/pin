@@ -29,7 +29,7 @@
 
         <provider
             android:name=".NotesProvider"
-            android:authorities="de.nproth.pin.notes"
+            android:authorities="@string/authority_provider_notes"
             android:enabled="true"
             android:exported="false" />
 

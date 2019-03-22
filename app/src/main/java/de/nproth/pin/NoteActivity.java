@@ -162,7 +162,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnLongClickL
     public boolean onLongClick(View v) {
 
         ContentValues cv = new ContentValues();
-        cv.put(NotesProvider.Notes.WAKE_UP, System.currentTimeMillis());
+        cv.put(NotesProvider.Notes.WAKE_UP, 0);
 
         int updated = getContentResolver().update(Uri.parse(NotesProvider.CONTENT_URI + "/notes"), cv, NotesProvider.Notes.WAKE_UP + " <> 0 AND " + NotesProvider.Notes.TEXT + " IS NOT NULL", null);
 
@@ -170,7 +170,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnLongClickL
         if(updated > 0)
             Toast.makeText(this, R.string.toast_show_all, Toast.LENGTH_SHORT).show();
 
-        Pinboard.get(this).updateVisible();
+        //update silently (without notification ping)
+        Pinboard.get(this).updateVisible(true);
         return true;
     }
 

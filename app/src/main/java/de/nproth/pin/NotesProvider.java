@@ -17,7 +17,7 @@ import android.util.Log;
  */
 public class NotesProvider extends ContentProvider {
 
-    public static final String AUTHORITIES = "de.nproth.pin.notes";
+    public static final String AUTHORITIES = BuildConfig.APPLICATION_ID + ".notes";
     public static final String CONTENT_URI = "content://" + AUTHORITIES;
 
     public static final class Notes implements BaseColumns {

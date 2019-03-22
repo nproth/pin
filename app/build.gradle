@@ -9,8 +9,13 @@ android {
         versionCode 2
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "authority_provider_notes", applicationId + '.notes'
     }
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            resValue "string", "authority_provider_notes", defaultConfig.applicationId + '.debug.notes'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

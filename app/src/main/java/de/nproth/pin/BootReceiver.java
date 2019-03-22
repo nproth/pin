@@ -26,8 +26,8 @@ public class BootReceiver extends BroadcastReceiver {
             //First clean up database
             context.getContentResolver().delete(NotesProvider.Notes.NOTES_URI, "text IS NULL", null);
 
-            //Show pins
-            Pinboard.get(context).updateAll();
+            //Show pins silently
+            Pinboard.get(context).updateAll(true);
         }
     }
 }

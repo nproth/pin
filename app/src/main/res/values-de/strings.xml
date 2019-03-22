@@ -5,6 +5,12 @@
     <string name="channel_name">Notizen</string>
     <string name="channel_description">Zeigt Notizen in der Benachrichtigungsleiste</string>
 
+    <string name="channel_name_pin">Neu erstellte Notizen</string>
+    <string name="channel_description_pin">Neu erstellte Notizen werden zu diesem stummen Benachrichtigungskanal hinzugefügt</string>
+
+    <string name="channel_name_wake">Aufgeweckte Notizen</string>
+    <string name="channel_description_wake">Wieder sichtbar gewordene Notizen werden in diesem Kanal angezeigt und machen je nach Systemkonfiguration mit Ton oder Vibration auf sich aufmerksam.</string>
+
     <plurals name="notification_summary_title">
         <item quantity="one">%d Notiz</item>
         <item quantity="other">%d Notizen</item>
