@@ -1,0 +1,12 @@
+<resources>
+    <declare-styleable name="RotaryControlView">
+        <attr name="scaleDrawable" format="reference" />
+        <attr name="barDrawable" format="reference" />
+        <attr name="startAngle" format="float" />
+        <attr name="endAngle" format="float" />
+        <attr name="min" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="step" format="integer" />
+        <attr name="value" format="integer" />
+    </declare-styleable>
+</resources>

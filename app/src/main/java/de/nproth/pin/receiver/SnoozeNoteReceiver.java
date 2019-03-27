@@ -1,4 +1,4 @@
-package de.nproth.pin;
+package de.nproth.pin.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.UriMatcher;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import de.nproth.pin.NotesProvider;
+import de.nproth.pin.R;
+import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.Timespan;
 
 public class SnoozeNoteReceiver extends BroadcastReceiver {
@@ -20,8 +22,8 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
     private static final int NOTES_ITEM = 1;
     private static final int NOTES_LIST = 2;
 
-    private UriMatcher mUris = new UriMatcher(UriMatcher.NO_MATCH);
-    {
+    private static final UriMatcher mUris = new UriMatcher(UriMatcher.NO_MATCH);
+    static {
         mUris.addURI(NotesProvider.AUTHORITIES, "notes/#", NOTES_ITEM);
         mUris.addURI(NotesProvider.AUTHORITIES, "notes", NOTES_LIST);
     }
@@ -36,8 +38,20 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
             return;
         }
 
-        final long snoozeDuration = PreferenceManager.getDefaultSharedPreferences(context).getLong(NoteActivity.PREFERENCE_SNOOZE_DURATION, NoteActivity.DEFAULT_SNOOZE_DURATION);
+        Intent i = new Intent(context, PinboardService.class);
+        i.setData(data);
+        i.setAction(PinboardService.INTENT_ACTION_SNOOZE_PIN);
 
+        context.startService(i);
+    }
+
+    /**
+     * Called from {@link PinboardService} when this receiver's onReceive method was called and passed an appropriate intent.
+     * This cannot be called directly as the snoozeDuration setting is needed which is held by the service and can only be obtained through binding.
+     * Binding a service is not possible in a BroadcastReceiver so just start the service and let it take care of the work (and call this method)
+     * @return number of updated pins
+     */
+    public static int onSnoozePins(Context context, long snoozeDuration, Uri data) {
         ContentValues cv = new ContentValues();
         long snoozed = System.currentTimeMillis();
 
@@ -53,22 +67,20 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
 
                 if(TextUtils.isEmpty(idstring) || !TextUtils.isDigitsOnly(idstring)) {
                     Log.e("SnoozeNoteReceiver", String.format("Could not snooze note item: invalid id '%s' in uri '%s'", idstring, data.toString()));
-                    return;
+                    return 0;
                 }
                 //continue to next
             case NOTES_LIST:
                 int rows = context.getContentResolver().update(data, cv, "text IS NOT NULL", null);//snooze either on note item or all notes which are not marked as deleted (text is not null)
                 Log.d("SnoozeNoteProvider", String.format("Snoozed %d rows", rows));
-                if(rows > 0)
-                    Pinboard.get(context).updateChanged();
 
                 //show a toast if the user had dismissed this pin to indicate that this note will pop up again after some delay
                 Toast.makeText(context, context.getResources().getString(R.string.toast_pin_dismissed, new Timespan(context, snoozeDuration).toString()), Toast.LENGTH_SHORT).show();
 
-                return;
+                return rows;
             default:
                 Log.e("SnoozeNoteReceiver", String.format("Could not snooze note: invalid uri '%s'", data.toString()));
-                return;
+                return 0;
         }
     }
 

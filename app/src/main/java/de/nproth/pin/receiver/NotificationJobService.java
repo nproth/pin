@@ -1,8 +1,12 @@
-package de.nproth.pin;
+package de.nproth.pin.receiver;
 
 import android.annotation.TargetApi;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Intent;
+
+import de.nproth.pin.pinboard.PinboardService;
+import de.nproth.pin.receiver.AlarmReceiver;
 
 /**
  * Updates notifications in background using the JobScheduler framework.
@@ -13,7 +17,8 @@ public class NotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters params) {
-        Pinboard.get(this).updateChanged();
+        //update notifications
+        startService(new Intent(this, PinboardService.class));
         return false;//work is done at this point
     }
 

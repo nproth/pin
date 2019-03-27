@@ -1,17 +1,15 @@
 package de.nproth.pin;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,28 +24,30 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.nproth.pin.util.LifecycleWatcher;
+import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.Timespan;
 
 /**
  * Only activity of this app. Allows the user to add or edit pins and set the snooze duration
  */
-public class NoteActivity extends AppCompatActivity {
-
-    public static final String PREFERENCE_PERSISTENT_NOTIFICATIONS = "pref_persistent_notifications";
-    public static final String PREFERENCE_SNOOZE_DURATION = "snooze_duration";
-    public static final long DEFAULT_SNOOZE_DURATION = 30 * 60 * 1000; //30min in millis
+public class NoteActivity extends AppCompatActivity implements ServiceConnection {
 
     private EditText NoteInputField;
     private ImageButton SaveNoteButton;
     private Button SnoozeDurationButton;
+    private RotaryControlView SnoozeDurationSlider;
 
     private Handler mAnimHandler;
 
     private Animation mEmptyPinAnimation;
     private Animation mPinAnimation;
+    private Animation mRotaryAnimation;
+    private Animation mRotarySetAnimation;
 
-    private int rowId = 0;
+    private int[] mDurations;
+    private int[] mSteps;
+
+    private PinboardService.PinboardBinder mPinboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +60,51 @@ public class NoteActivity extends AppCompatActivity {
         NoteInputField = findViewById(R.id.note_input_field);
         SaveNoteButton = findViewById(R.id.note_save_button);
         SnoozeDurationButton = findViewById(R.id.snooze_duration_button);
+        SnoozeDurationSlider = findViewById(R.id.snooze_duration_slider);
 
         mAnimHandler = new Handler(Looper.getMainLooper());
         mPinAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_input_field_pin);
 
         mEmptyPinAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_input_field_empty);
 
+        mRotaryAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_rotary_control);
+        mRotarySetAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_rotary_set);
+
+
+        mDurations = getResources().getIntArray(R.array.snooze_durations);
+        mSteps = getResources().getIntArray(R.array.snooze_duration_steps);
+
+        prepareEditPin();
+
+    }
+
+    @Override
+    public void onNewIntent(Intent i) {
+        setIntent(i);
+        prepareEditPin();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindService(new Intent(this, PinboardService.class), this, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(this);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mPinboard = (PinboardService.PinboardBinder) service;
+
+        /*****************************
+         Initialize UI components here
+         *****************************/
+
+        //pin note to notification drawer on enter action in textfield
         NoteInputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -78,89 +117,99 @@ public class NoteActivity extends AppCompatActivity {
             }
         });
 
-        populateUI();
-
-        //update snooze duration button text
-        Timespan span = new Timespan(this, PreferenceManager.getDefaultSharedPreferences(this).getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
-        String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
-        SnoozeDurationButton.setText(txt);
+        //Wake up hidden pins on long click on SnoozeDurationutton
         SnoozeDurationButton.setOnLongClickListener(new View.OnLongClickListener() {
-            /**
-             * Handler for long click on SetSnoozeDurationButton
-             * Wakes up all currently hidden pins
-             */
             @Override
             public boolean onLongClick(View v) {
-
                 ContentValues cv = new ContentValues();
                 cv.put(NotesProvider.Notes.WAKE_UP, 0);
-
                 int updated = getContentResolver().update(Uri.parse(NotesProvider.CONTENT_URI + "/notes"), cv, NotesProvider.Notes.WAKE_UP + " <> 0 AND " + NotesProvider.Notes.TEXT + " IS NOT NULL", null);
-
                 //Show toast when notes woke up
                 if(updated > 0)
                     Toast.makeText(NoteActivity.this, R.string.toast_show_all, Toast.LENGTH_SHORT).show();
-
                 //update silently (without notification ping)
-                Pinboard.get(NoteActivity.this).updateVisible(true);
+                mPinboard.update();
                 return true;
             }
         });
 
+        //Prepare Rotary Control
+        SnoozeDurationSlider.setOnValueChangedListener(new RotaryControlView.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int val, int min, int max, int stepVal) {}
+
+            @Override
+            public void onUserChangeBegin(int val) {}
+
+            @Override
+            public void onUserChange(int val) {
+                int cur = val * 1000;
+                Timespan span = new Timespan(NoteActivity.this, cur);
+                String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
+                SnoozeDurationButton.setText(txt);
+            }
+
+            @Override
+            public void onUserChangeEnd(int val) {
+                mPinboard.setSnoozeDuration(val * 1000);
+            }
+        });
+
+        //And fix pins on long click on PinButton
         SaveNoteButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NoteActivity.this);
-                boolean fixPins = !prefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, false);
-                prefs.edit().putBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, fixPins).apply();
-
+                boolean fixPins = !mPinboard.getIsFixed();
+                mPinboard.setIsFixed(fixPins);
                 String toast;
                 if(fixPins)
                     toast = NoteActivity.this.getString(R.string.toast_fix_pins);
                 else
                     toast = NoteActivity.this.getString(R.string.toast_unfix_pins);
-
                 Toast.makeText(NoteActivity.this, toast, Toast.LENGTH_SHORT).show();
-                Pinboard.get(NoteActivity.this).updateVisible(true);
+                mPinboard.update();
                 return true;
             }
         });
 
-        Pinboard.get(this).updateAll(true);
-
+        loadSnoozeDuration();
+        SnoozeDurationSlider.startAnimation(mRotaryAnimation);
     }
 
     @Override
-    public void onNewIntent(Intent i) {
-        setIntent(i);
-        populateUI();
+    public void onServiceDisconnected(ComponentName name) {
+        Log.w("NoteActivity", "PinboardService disconnected, shutting down activity...");
+        NoteInputField.setOnEditorActionListener(null);
+        SnoozeDurationButton.setOnLongClickListener(null);
+        SnoozeDurationSlider.setOnValueChangedListener(null);
+        SaveNoteButton.setOnLongClickListener(null);
+        mPinboard = null;
     }
 
-    public void populateUI() {
 
-        //Check whether supplied data uri (if any) is valid
-        Uri uri = getIntent().getData();
-        Log.d("NoteActivity", String.format("Activity called with uri: %s", uri == null? "null" : uri));
-        if(uri != null) {
-            if (TextUtils.isEmpty(uri.getLastPathSegment()) || !TextUtils.isDigitsOnly(uri.getLastPathSegment())) {
-                Log.e("NoteActivity", String.format("Invalid data uri '%s' supplied", uri));
-                finish();
-            }
-            //And populate UI with supplied data
-            Cursor c = getContentResolver().query(uri, new String[] { NotesProvider.Notes.TEXT }, null, null, null);
-            if(c == null || c.getCount() != 1) {
-                Log.e("NoteActivity", String.format("Could not query text for uri '%s'", uri));
-            } else {
-                c.moveToFirst();
-                NoteInputField.setText(c.getString(0));
-            }
+    private void loadSnoozeDuration() {
+        final long dur = mPinboard.getSnoozeDuration();
 
-            if(c != null)
-                c.close();
-        }
+        int index = 0;
+        while(index < mDurations.length && mDurations[index] < dur)
+            index++;
+
+        SnoozeDurationSlider.setMaxValue(mDurations[index] / 1000);
+        SnoozeDurationSlider.setStepValue(mSteps[index] / 1000);
+        SnoozeDurationSlider.setValue((int) (dur / 1000));//in seconds
+        //setValue / getValue takes care of normalizing, aligning to steps, ...
+        Timespan span = new Timespan(this, SnoozeDurationSlider.getValue() * 1000);
+
+        String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
+        SnoozeDurationButton.setText(txt);
+        mPinboard.update();
     }
 
     public void onNoteSaveButtonClicked(View v) {
+        if(mPinboard == null) {
+            Log.e("NoteActivity", "PinButton clicked but PinboardService disconnected");
+            return;
+        }
         pinNote();
     }
 
@@ -169,34 +218,28 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     public void onSetSnoozeDurationButtonClicked(View v) {
-        int[] durations = getResources().getIntArray(R.array.snooze_durations);
-
-        long cur = PreferenceManager.getDefaultSharedPreferences(this).getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION);
-
-        int index = -1;
-
-        for(int i = 0; i < durations.length; i++) {
-            if (cur == durations[i]) {
-                index = i;
-                break;
-            }
+        if(mPinboard == null) {
+            Log.e("NoteActivity", "PinButton clicked but PinboardService disconnected");
+            return;
         }
 
-        if(index >= 0 && index < durations.length - 1)
-            cur = durations[index + 1];
-        else
-            cur = durations[0];
+        int index = 0;
+        long dur = SnoozeDurationSlider.getValue() * 1000;
+        while(index < mDurations.length && mDurations[index] <= dur)
+            index++;
+        if(index == mDurations.length)
+            index = 0;
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(PREFERENCE_SNOOZE_DURATION, cur).apply();
-
-        Timespan span = new Timespan(this, cur);
-        String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
-        SnoozeDurationButton.setText(txt);
-
-        //notify service about the changed snooze duration
-        Pinboard.get(this).updateVisible();
+        final int i = index;
+        SnoozeDurationSlider.startAnimation(mRotarySetAnimation);
+        mAnimHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPinboard.setSnoozeDuration(mDurations[i]);
+                loadSnoozeDuration();
+            }
+        }, 250);
     }
-
 
     private void pinNote() {
         String txt = NoteInputField.getText().toString();
@@ -224,9 +267,10 @@ public class NoteActivity extends AppCompatActivity {
             }
 
             if(uri != null)
-                Pinboard.get(this).updateChanged();
+                mPinboard.update();
 
             NoteInputField.startAnimation(mPinAnimation);
+            SnoozeDurationSlider.startAnimation(mRotarySetAnimation);
             mAnimHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -241,6 +285,32 @@ public class NoteActivity extends AppCompatActivity {
 
         //But clear any data we previously operated upon
         getIntent().setData(null);
+    }
+
+    /**
+     * Checks whether any Uri data is contained in the activity's intent and prepares the textfield accordingly. To be called from onCreate and onNewIntent
+     */
+    private void prepareEditPin() {
+
+        Uri uri = getIntent().getData();
+        Log.d("NoteActivity", String.format("Activity called with uri: %s", uri == null? "null" : uri));
+        if(uri != null) {
+            if (TextUtils.isEmpty(uri.getLastPathSegment()) || !TextUtils.isDigitsOnly(uri.getLastPathSegment())) {
+                Log.e("NoteActivity", String.format("Invalid data uri '%s' supplied", uri));
+                finish();
+            }
+            //And populate UI with supplied data
+            Cursor c = getContentResolver().query(uri, new String[] { NotesProvider.Notes.TEXT }, null, null, null);
+            if(c == null || c.getCount() != 1) {
+                Log.e("NoteActivity", String.format("Could not query text for uri '%s'", uri));
+            } else {
+                c.moveToFirst();
+                NoteInputField.setText(c.getString(0));
+            }
+
+            if(c != null)
+                c.close();
+        }
     }
 
     @Override

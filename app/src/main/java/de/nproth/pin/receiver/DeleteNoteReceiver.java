@@ -1,4 +1,4 @@
-package de.nproth.pin;
+package de.nproth.pin.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -8,6 +8,9 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
+import de.nproth.pin.NotesProvider;
+import de.nproth.pin.pinboard.PinboardService;
 
 /**
  * Called from notification action button.
@@ -60,8 +63,10 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
             case NOTES_LIST:
                 int rows = context.getContentResolver().update(data, cv, "text IS NOT NULL", null);//delete either on note item or all notes which are not marked as deleted already (text is not null)
                 Log.d("DeleteNoteProvider", String.format("Deleted %d rows", rows));
-                if(rows > 0)
-                    Pinboard.get(context).updateChanged();
+
+                //update notifications
+                context.startService(new Intent(context, PinboardService.class));
+
                 return;
             default:
                 Log.e("DeleteNoteReceiver", String.format("Could not snooze note: invalid uri '%s'", data.toString()));

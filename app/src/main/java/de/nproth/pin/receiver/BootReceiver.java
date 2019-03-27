@@ -1,10 +1,12 @@
-package de.nproth.pin;
+package de.nproth.pin.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import de.nproth.pin.NotesProvider;
+import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.LifecycleWatcher;
 
 /**
@@ -26,8 +28,8 @@ public class BootReceiver extends BroadcastReceiver {
             //First clean up database
             context.getContentResolver().delete(NotesProvider.Notes.NOTES_URI, "text IS NULL", null);
 
-            //Show pins silently
-            Pinboard.get(context).updateAll(true);
+            //Show pins
+            context.startService(new Intent(context, PinboardService.class));
         }
     }
 }

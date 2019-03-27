@@ -1,4 +1,4 @@
-package de.nproth.pin;
+package de.nproth.pin.pinboard;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -13,18 +13,26 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import de.nproth.pin.receiver.AlarmReceiver;
+import de.nproth.pin.receiver.DeleteNoteReceiver;
+import de.nproth.pin.NoteActivity;
+import de.nproth.pin.NotesProvider;
+import de.nproth.pin.receiver.NotificationJobService;
+import de.nproth.pin.R;
+import de.nproth.pin.receiver.SnoozeNoteReceiver;
 import de.nproth.pin.util.Timespan;
 
 /**
  * Updates notifications when pins are added / snoozed / deleted
  */
-public final class Pinboard {
+final class Pinboard {
+
+    private static Pinboard Me;
 
     /**
      * Only used prior to version 1.1
@@ -47,6 +55,10 @@ public final class Pinboard {
     private final NotificationManager mNManager;
     private final AlarmManager mAlarm;
     private final JobScheduler mScheduler;
+
+
+    private long mSnoozeDuration = 30 * 60 * 1000;//30min in millis
+    private boolean mFixed = false;
 
 
     private long mLastChecked = 0;
@@ -90,7 +102,6 @@ public final class Pinboard {
     }
 
     private void update(long timeNow, boolean silent, String where, String... wargs) {
-        final long snoozeDuration = PreferenceManager.getDefaultSharedPreferences(mContext).getLong(NoteActivity.PREFERENCE_SNOOZE_DURATION, NoteActivity.DEFAULT_SNOOZE_DURATION);
 
         long currentCheck = timeNow;
         long alarmTime = 0;//0 means that no alarm should be set
@@ -150,12 +161,12 @@ public final class Pinboard {
                                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                                 //Add actions to delete or snooze note, don't use icons here
                                 .addAction(0, mContext.getString(R.string.action_delete), PendingIntent.getBroadcast(mContext, 0, idelete, 0))
-                                .addAction(0, mContext.getString(R.string.action_snooze, new Timespan(mContext, PreferenceManager.getDefaultSharedPreferences(mContext).getLong(NoteActivity.PREFERENCE_SNOOZE_DURATION, NoteActivity.DEFAULT_SNOOZE_DURATION)).toString()), PendingIntent.getBroadcast(mContext, 0, isnooze, 0))
+                                .addAction(0, mContext.getString(R.string.action_snooze, new Timespan(mContext, mSnoozeDuration).toString()), PendingIntent.getBroadcast(mContext, 0, isnooze, 0))
                                 .addAction(0, mContext.getString(R.string.action_edit), PendingIntent.getActivity(mContext, 0, iedit, 0))
                                 .setContentIntent(PendingIntent.getActivity(mContext, 0, iactivity, 0))//show NoteActivity when user clicks on note.
                                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
                         //Make notes persistent
-                        if(PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(NoteActivity.PREFERENCE_PERSISTENT_NOTIFICATIONS, false))
+                        if(mFixed)
                             builder.setOngoing(true);
 
                         isnooze.setAction(SnoozeNoteReceiver.ACTION_NOTIFICATION_DISMISSED);
@@ -203,7 +214,7 @@ public final class Pinboard {
 
 
         //on pre N devices our notification actions are no longer accessible when they are summarized. Just keep distinct notifications on older devices.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || false) {
             //Now build a summary notification for the group
             //query all visible texts from other notifications
             db = null;
@@ -241,7 +252,7 @@ public final class Pinboard {
                             .setGroupSummary(true)
                             .setCategory(NotificationCompat.CATEGORY_REMINDER);
 
-                    if(PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(NoteActivity.PREFERENCE_PERSISTENT_NOTIFICATIONS, false))
+                    if(mFixed)
                         builder.setOngoing(true);
 
                     mNotify.notify(SUMMARY_ID, builder.build());
@@ -285,9 +296,29 @@ public final class Pinboard {
         //mLastChecked = now;
     }
 
+    public long getSnoozeDuration() {
+        return mSnoozeDuration;
+    }
+
+    public void setSnoozeDuration(long dur) {
+        mSnoozeDuration = dur;
+        updateVisible();
+    }
+
+    public boolean getIsFixed() {
+        return mFixed;
+    }
+
+    public void setIsFixed(boolean fix) {
+        mFixed = fix;
+        updateVisible();
+    }
+
     public static Pinboard get(Context ctx) {
         if(ctx == null)
             throw new NullPointerException("Cannot acquire instance of singleton 'Pinboard': Context is NULL ");
-        return new Pinboard(ctx);
+        if(Me == null)
+            Me = new Pinboard(ctx.getApplicationContext());
+        return Me;
     }
 }

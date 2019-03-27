@@ -6,19 +6,23 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:installLocation="internalOnly"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:installLocation="internalOnly"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".pinboard.PinboardService"
+            android:enabled="true"
+            android:exported="false"/>
+
         <activity
             android:name=".NoteActivity"
-            android:noHistory="true"
-            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
-
+            android:launchMode="singleInstance"
+            android:noHistory="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,28 +38,28 @@
             android:exported="false" />
 
         <receiver
-            android:name=".DeleteNoteReceiver"
+            android:name=".receiver.DeleteNoteReceiver"
             android:enabled="true" />
         <receiver
-            android:name=".SnoozeNoteReceiver"
+            android:name=".receiver.SnoozeNoteReceiver"
             android:enabled="true" />
         <receiver
-            android:name=".BootReceiver"
+            android:name=".receiver.BootReceiver"
             android:enabled="true">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".AlarmReceiver"
-            android:enabled="true"/>
+            android:name=".receiver.AlarmReceiver"
+            android:enabled="true" />
 
         <service
-            android:name=".NotificationJobService"
+            android:name=".receiver.NotificationJobService"
             android:enabled="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" >
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
