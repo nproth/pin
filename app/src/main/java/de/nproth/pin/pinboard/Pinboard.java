@@ -214,7 +214,7 @@ final class Pinboard {
 
 
         //on pre N devices our notification actions are no longer accessible when they are summarized. Just keep distinct notifications on older devices.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || false) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //Now build a summary notification for the group
             //query all visible texts from other notifications
             db = null;
