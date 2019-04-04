@@ -1,0 +1,1 @@
+* Dauer, um Notizen zu verbergen, lässt sich frei einstellen

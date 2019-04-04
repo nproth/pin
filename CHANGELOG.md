@@ -1,4 +1,10 @@
 # CHANGELOG
+##v1.2
+- Implement RotaryControlView and integrate it into NoteActivity: Allow user to change pin sleep duration via slider
+- Encapsulate Notification handling in Service
+- Move classes to subpackages
+- Add screenshots to app description in F-Droid
+
 ## v1.1
 - Add debug build configuration and make it install-able along release
 - Show all hidden notes when user long presses 'timer'-button
