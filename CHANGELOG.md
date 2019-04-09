@@ -1,5 +1,5 @@
 # CHANGELOG
-##v1.2
+## v1.2
 - Implement RotaryControlView and integrate it into NoteActivity: Allow user to change pin sleep duration via slider
 - Encapsulate Notification handling in Service
 - Move classes to subpackages
