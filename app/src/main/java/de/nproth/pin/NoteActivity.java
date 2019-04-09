@@ -46,6 +46,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
     private int[] mDurations;
     private int[] mSteps;
+    private int[] mZeroSnoozeDurations;
 
     private PinboardService.PinboardBinder mPinboard;
 
@@ -73,6 +74,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
         mDurations = getResources().getIntArray(R.array.snooze_durations);
         mSteps = getResources().getIntArray(R.array.snooze_duration_steps);
+        mZeroSnoozeDurations = getResources().getIntArray(R.array.zero_snooze_durations);
 
         prepareEditPin();
 
@@ -143,15 +145,18 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
             @Override
             public void onUserChange(int val) {
-                int cur = val * 1000;
+                // if zero, assume zero_snooze_duration
+                int cur = val == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : val * 1000;
                 Timespan span = new Timespan(NoteActivity.this, cur);
                 String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
+                if (span.millis < 60000) txt = ((int) span.inSecs()) + getResources().getString(R.string.symbol_time_seconds);
                 SnoozeDurationButton.setText(txt);
             }
 
             @Override
             public void onUserChangeEnd(int val) {
-                mPinboard.setSnoozeDuration(val * 1000);
+                // if zero, assume zero_snooze_duration
+                mPinboard.setSnoozeDuration(val == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : val * 1000);
             }
         });
 
@@ -198,9 +203,15 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
         SnoozeDurationSlider.setStepValue(mSteps[index] / 1000);
         SnoozeDurationSlider.setValue((int) (dur / 1000));//in seconds
         //setValue / getValue takes care of normalizing, aligning to steps, ...
-        Timespan span = new Timespan(this, SnoozeDurationSlider.getValue() * 1000);
 
+        Log.d("NoteActivity", "Loaded slider value " + SnoozeDurationSlider.getValue());
+        // If zero, assume zero_snooze_duration
+        long spanMillis = SnoozeDurationSlider.getValue() == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : SnoozeDurationSlider.getValue() * 1000;
+        Timespan span = new Timespan(this, spanMillis);
+
+        Log.d("NoteActivity", "Loaded milliseconds " + span.millis);
         String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
+        if (span.millis < 60000) txt = ((int) span.inSecs()) + getResources().getString(R.string.symbol_time_seconds);
         SnoozeDurationButton.setText(txt);
         mPinboard.update();
     }
