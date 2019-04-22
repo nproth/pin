@@ -18,7 +18,9 @@ public class NotificationJobService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters params) {
         //update notifications
-        startService(new Intent(this, PinboardService.class));
+        Intent i = new Intent(this, PinboardService.class);
+        i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
+        startService(i);
         return false;//work is done at this point
     }
 

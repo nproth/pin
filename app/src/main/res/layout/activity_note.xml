@@ -18,6 +18,7 @@
         android:layout_marginBottom="-56dp"
         android:layout_marginLeft="-16dp"
         android:layout_marginStart="-16dp"
+        android:layout_marginRight="0dp"
         android:layout_marginEnd="0dp"
         android:background="@drawable/background_rotary"
         android:elevation="4dp"
@@ -45,6 +46,7 @@
         android:onClick="onSetSnoozeDurationButtonClicked"
         android:stateListAnimator="@animator/state_anim_button"
         android:text="@string/text_default_button_snooze_duration"
+        android:textAllCaps="false"
         android:textColor="@color/colorAccent" />
 
     <EditText
@@ -67,6 +69,20 @@
         android:paddingRight="72dp"
         android:paddingBottom="8dp"
         android:textCursorDrawable="@null" />
+
+    <ImageButton
+        android:id="@+id/note_pin_background"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_above="@+id/note_save_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="onNotePinBackgroundButtonClicked"
+        android:background="@drawable/background_button_light"
+        android:src="@drawable/ic_timespan"
+        android:elevation="16dp"/>
 
     <ImageButton
         android:id="@+id/note_save_button"

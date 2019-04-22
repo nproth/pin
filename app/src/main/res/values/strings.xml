@@ -20,12 +20,14 @@
 
     <string name="text_default_button_snooze_duration" translatable="false">-:--</string>
     <string name="ftext_button_snooze_duration" translatable="false">%1$01d:%2$02d</string>
+    <string name="ftext_button_zero_snooze" translatable="false">%1$2ds</string>
 
     <string name="action_delete">Done</string>
     <string name="action_snooze">Snooze %1$s</string>
     <string name="action_edit">Edit</string>
 
     <string name="toast_pin_dismissed">Snoozed for %1$s</string>
+    <string name="toast_pin_background">Show in %1$s</string>
 
     <string name="symbol_time_seconds" translatable="false">s</string>
     <string name="symbol_time_minutes" translatable="false">min</string>

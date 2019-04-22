@@ -16,6 +16,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm triggered, starting NotificationService...");
         //update notifications
-        context.startService(new Intent(context, PinboardService.class));
+        Intent i = new Intent(context, PinboardService.class);
+        i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
+        context.startService(i);
     }
 }

@@ -1,0 +1,2 @@
+* Kurzes Zeitintervall zum Verbergen von Notizen hinzugefügt, wenn der Regler auf Null gesetzt ist
+* Notizen können im Hintergrund hinzugefügt und direkt verborgen werden

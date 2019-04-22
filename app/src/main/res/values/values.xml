@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- in milliseconds -->
-    <integer name="zero_snooze_duration">10000</integer>
+    <!--<integer name="zero_snooze_duration">10000</integer>-->
 
     <!-- Not currently in use -->
     <integer-array name="zero_snooze_durations">
         <!--<item>1000</item>--><!-- 10sec: 1sec -->
         <!--<item>5000</item>--><!-- 1min: 5sec -->
-        <item>10000</item><!-- 0:30h: 10sec -->
-        <item>30000</item><!-- 1:00h: 30sec -->
-        <!--<item>10000</item><!- 1:30h: 10sec -->
-        <!--<item>10000</item><!- 2:00h: 10sec -->
-        <!--<item>10000</item><!- 3:00h: 10sec -->
-        <item>10000</item><!-- 6:00h: 10sec -->
-        <!--<item>10000</item><!- 12:00h: 10sec -->
-        <item>10000</item><!-- 24:00h: 10sec -->
+        <item>5000</item><!-- 0:30h: 5sec -->
+        <item>10000</item><!-- 1:00h: 10sec -->
+        <!--<item>30000</item><!- 1:30h: 30sec -->
+        <!--<item>30000</item><!- 2:00h: 30sec -->
+        <!--<item>30000</item><!- 3:00h: 30sec -->
+        <item>30000</item><!-- 6:00h: 10sec -->
+        <!--<item>30000</item><!- 12:00h: 30sec -->
+        <item>30000</item><!-- 24:00h: 30sec -->
     </integer-array>
 
     <integer-array name="snooze_durations">

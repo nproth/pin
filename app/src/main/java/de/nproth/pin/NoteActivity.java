@@ -36,6 +36,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
     private ImageButton SaveNoteButton;
     private Button SnoozeDurationButton;
     private RotaryControlView SnoozeDurationSlider;
+    private ImageButton PinBackgroundButton;
 
     private Handler mAnimHandler;
 
@@ -43,10 +44,12 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
     private Animation mPinAnimation;
     private Animation mRotaryAnimation;
     private Animation mRotarySetAnimation;
+    private Animation mPopInAnimation;
 
     private int[] mDurations;
     private int[] mSteps;
     private int[] mZeroSnoozeDurations;
+    private int mZeroSnoozeDur;
 
     private PinboardService.PinboardBinder mPinboard;
 
@@ -63,6 +66,8 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
         SnoozeDurationButton = findViewById(R.id.snooze_duration_button);
         SnoozeDurationSlider = findViewById(R.id.snooze_duration_slider);
 
+        PinBackgroundButton = findViewById(R.id.note_pin_background);
+
         mAnimHandler = new Handler(Looper.getMainLooper());
         mPinAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_input_field_pin);
 
@@ -70,6 +75,8 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
         mRotaryAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_rotary_control);
         mRotarySetAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_rotary_set);
+
+        mPopInAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_pop_in);
 
 
         mDurations = getResources().getIntArray(R.array.snooze_durations);
@@ -111,7 +118,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE || (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    pinNote();
+                    pinNote(0);
                     return true;
                 }
                 else
@@ -146,17 +153,17 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
             @Override
             public void onUserChange(int val) {
                 // if zero, assume zero_snooze_duration
-                int cur = val == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : val * 1000;
+                int cur = val == 0 ? mZeroSnoozeDur : val * 1000;
                 Timespan span = new Timespan(NoteActivity.this, cur);
                 String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
-                if (span.millis < 60000) txt = ((int) span.inSecs()) + getResources().getString(R.string.symbol_time_seconds);
+                if (span.millis < 60000) txt = getResources().getString(R.string.ftext_button_zero_snooze, (int) span.inSecs());
                 SnoozeDurationButton.setText(txt);
             }
 
             @Override
             public void onUserChangeEnd(int val) {
                 // if zero, assume zero_snooze_duration
-                mPinboard.setSnoozeDuration(val == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : val * 1000);
+                mPinboard.setSnoozeDuration(val == 0 ? mZeroSnoozeDur : val * 1000);
             }
         });
 
@@ -179,6 +186,8 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
         loadSnoozeDuration();
         SnoozeDurationSlider.startAnimation(mRotaryAnimation);
+
+        PinBackgroundButton.startAnimation(mPopInAnimation);
     }
 
     @Override
@@ -193,25 +202,36 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
 
     private void loadSnoozeDuration() {
-        final long dur = mPinboard.getSnoozeDuration();
+        long dur = mPinboard.getSnoozeDuration();
 
         int index = 0;
-        while(index < mDurations.length && mDurations[index] < dur)
+
+        while(index < mDurations.length - 1 && mDurations[index] < dur)
             index++;
+
+        //if there is a zero snooze duration exactly matching the current duration, set up this instead
+        for(int i = 0; i < mDurations.length; i++)
+            if(mZeroSnoozeDurations[i] == dur) {
+                dur = 0;
+                index = i;//Assuming that mDurations and mZeroDurations have equal length
+            }
 
         SnoozeDurationSlider.setMaxValue(mDurations[index] / 1000);
         SnoozeDurationSlider.setStepValue(mSteps[index] / 1000);
         SnoozeDurationSlider.setValue((int) (dur / 1000));//in seconds
         //setValue / getValue takes care of normalizing, aligning to steps, ...
 
+        mZeroSnoozeDur = mZeroSnoozeDurations[index];
+
         Log.d("NoteActivity", "Loaded slider value " + SnoozeDurationSlider.getValue());
         // If zero, assume zero_snooze_duration
-        long spanMillis = SnoozeDurationSlider.getValue() == 0 ? getResources().getInteger(R.integer.zero_snooze_duration) : SnoozeDurationSlider.getValue() * 1000;
+        long spanMillis = SnoozeDurationSlider.getValue() == 0 ? mZeroSnoozeDur : SnoozeDurationSlider.getValue() * 1000;
         Timespan span = new Timespan(this, spanMillis);
 
         Log.d("NoteActivity", "Loaded milliseconds " + span.millis);
         String txt = getResources().getString(R.string.ftext_button_snooze_duration, (int) span.inHours(), span.restMins());
-        if (span.millis < 60000) txt = ((int) span.inSecs()) + getResources().getString(R.string.symbol_time_seconds);
+        if (span.millis < 60000)
+            txt =  getResources().getString(R.string.ftext_button_zero_snooze, (int) span.inSecs());
         SnoozeDurationButton.setText(txt);
         mPinboard.update();
     }
@@ -221,7 +241,16 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
             Log.e("NoteActivity", "PinButton clicked but PinboardService disconnected");
             return;
         }
-        pinNote();
+        pinNote(0);
+    }
+
+    public void onNotePinBackgroundButtonClicked(View v) {
+        if(mPinboard == null) {
+            Log.e("NoteActivity", "PinButton clicked but PinboardService disconnected");
+            return;
+        }
+        if(pinNote(mPinboard.getSnoozeDuration()))
+            Toast.makeText(this, getResources().getString(R.string.toast_pin_background, new Timespan(this, mPinboard.getSnoozeDuration()).toString()), Toast.LENGTH_SHORT).show();
     }
 
     public void onParentLayoutClicked(View v) {
@@ -252,7 +281,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
         }, 250);
     }
 
-    private void pinNote() {
+    private boolean pinNote(long snooze) {
         String txt = NoteInputField.getText().toString();
         long time = System.currentTimeMillis();
 
@@ -262,6 +291,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
             ContentValues cv = new ContentValues();
             cv.put(NotesProvider.Notes.TEXT, txt);
             cv.put(NotesProvider.Notes.MODIFIED, time);
+            cv.put(NotesProvider.Notes.WAKE_UP, time + snooze);
 
             Uri uri = getIntent().getData();
 
@@ -289,13 +319,16 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
                     NoteInputField.requestFocus();
                 }
             }, 125);
-        } else
+
+            //Do not close but give user the opportunity to enter additional notes
+
+            //But clear any data we previously operated upon
+            getIntent().setData(null);
+            return true;
+        } else {
             NoteInputField.startAnimation(mEmptyPinAnimation);
-
-        //Do not close but give user the opportunity to enter additional notes
-
-        //But clear any data we previously operated upon
-        getIntent().setData(null);
+            return false;
+        }
     }
 
     /**

@@ -1,0 +1,2 @@
+* Added small snooze duration for pins when slider is set to zero
+* Notes can be pinned in background and snoozed immediately

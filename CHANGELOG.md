@@ -1,4 +1,8 @@
 # CHANGELOG
+## v1.2.1
+- Add small pin snooze duration when slider is set to 0 - thanks to @ewired
+- Add button to pin notes in background and immediately snooze them
+
 ## v1.2
 - Implement RotaryControlView and integrate it into NoteActivity: Allow user to change pin sleep duration via slider
 - Encapsulate Notification handling in Service

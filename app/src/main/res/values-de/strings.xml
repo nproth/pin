@@ -23,6 +23,7 @@
     <string name="action_edit">Bearbeiten</string>
 
     <string name="toast_pin_dismissed">Erinnerung in %1$s</string>
+    <string name="toast_pin_background">Sichtbar in %1$s</string>
 
     <string name="toast_show_all">Alle sichtbar</string>
 
