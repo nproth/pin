@@ -1,6 +1,6 @@
 # CHANGELOG
 ## v1.2.1
-- Add small pin snooze duration when slider is set to 0 - thanks to ewired
+- Add small pin snooze duration when slider is set to zero - thanks to _ewired_
 - Add button to pin notes in background and immediately snooze them
 
 ## v1.2
