@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -27,10 +28,12 @@ import de.nproth.pin.R;
 import de.nproth.pin.receiver.SnoozeNoteReceiver;
 import de.nproth.pin.util.Timespan;
 
+import static de.nproth.pin.pinboard.PinboardService.PREFERENCE_SNOOZE_DURATION;
+
 /**
  * Updates notifications when pins are added / snoozed / deleted
  */
-final class Pinboard {
+public final class Pinboard {
 
     private static Pinboard Me;
 
@@ -314,11 +317,19 @@ final class Pinboard {
         updateVisible();
     }
 
+    /**
+     * Saves the snooze duration in shared preferences
+     */
+    public void destroy() {
+        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putLong(PREFERENCE_SNOOZE_DURATION, getSnoozeDuration()).commit();
+    }
+
     public static Pinboard get(Context ctx) {
         if(ctx == null)
             throw new NullPointerException("Cannot acquire instance of singleton 'Pinboard': Context is NULL ");
         if(Me == null)
             Me = new Pinboard(ctx.getApplicationContext());
+        Me.setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(ctx).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
         return Me;
     }
 }

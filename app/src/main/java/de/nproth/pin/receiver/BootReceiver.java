@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import de.nproth.pin.NotesProvider;
+import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.LifecycleWatcher;
 
@@ -29,7 +30,11 @@ public class BootReceiver extends BroadcastReceiver {
             context.getContentResolver().delete(NotesProvider.Notes.NOTES_URI, "text IS NULL", null);
 
             //Show pins
-            context.startService(new Intent(context, PinboardService.class));
+            //On newer Android versions apps are no longer allowed to start services when they are in background
+            //context.startService(new Intent(context, PinboardService.class));
+
+            //As a fix invoke Pinboard directly. Nevertheless this is bad style because it circumvents the encapsulation of Pinboard through its service
+            Pinboard.get(context).updateAll(true);
         }
     }
 }

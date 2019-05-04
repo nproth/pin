@@ -10,10 +10,3 @@
 Die App ist in <b>Material Design</b> gehalten.
 
 Die Notizen werden zusätzlich in einer Datenbank gespeichert und bleiben nach einem Neustart erhalten.
-
-<b>Troubleshooting</b>
-
-Auf manchen Geräten kann <b>p!n</b> nicht im Hintergrund starten. Sollten die Notizen nach einem Neustart also nicht direkt angezeigt werden, so erscheinen sie, nachdem die App geöffnet wurde.
-Je nach Gerät hilft es auch, "Autostart" zu aktivieren, oder Akku-Optimierungen für diese Applikation auszuschalten.
-
-Mehr Informationen zu diesem Thema und Maßnahmen für Geräte verschiedener Hersteller sind unter anderem <a href="https://dontkillmyapp.com">hier</a> zu finden.

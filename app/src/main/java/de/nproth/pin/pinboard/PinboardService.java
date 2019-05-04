@@ -26,12 +26,8 @@ public class PinboardService extends Service {
 
     public class PinboardBinder extends Binder {
 
-        public void update(boolean silent) {
-            mPinboard.updateAll(silent);
-        }
-
         public void update() {
-            update(true);
+            mPinboard.updateAll(true);
         }
 
         public long getSnoozeDuration() {
@@ -63,7 +59,8 @@ public class PinboardService extends Service {
             int rows = SnoozeNoteReceiver.onSnoozePins(this, mPinboard.getSnoozeDuration(), intent.getData());
         }
 
-        mPinboard.updateAll(! INTENT_ACTION_WAKE_UP.equals(intent.getAction()));
+        //mPinboard.updateAll(! INTENT_ACTION_WAKE_UP.equals(intent.getAction()));
+        mPinboard.updateAll(true);
         return START_STICKY;
     }
 

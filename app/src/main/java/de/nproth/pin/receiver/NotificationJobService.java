@@ -5,6 +5,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
 
+import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.receiver.AlarmReceiver;
 
@@ -20,7 +21,8 @@ public class NotificationJobService extends JobService {
         //update notifications
         Intent i = new Intent(this, PinboardService.class);
         i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
-        startService(i);
+        //startService(i);
+        Pinboard.get(this).updateVisible(false);
         return false;//work is done at this point
     }
 

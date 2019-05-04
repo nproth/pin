@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import de.nproth.pin.NotesProvider;
 import de.nproth.pin.R;
+import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.Timespan;
 
@@ -42,7 +43,10 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
         i.setData(data);
         i.setAction(PinboardService.INTENT_ACTION_SNOOZE_PIN);
 
-        context.startService(i);
+        //context.startService(i);
+        Pinboard pin = Pinboard.get(context);
+        onSnoozePins(context, pin.getSnoozeDuration(), data);
+        pin.updateAll(false);
     }
 
     /**

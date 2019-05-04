@@ -1,0 +1,1 @@
+* Fix app crashing on boot under some circumstances

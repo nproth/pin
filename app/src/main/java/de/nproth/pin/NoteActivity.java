@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.nproth.pin.pinboard.PinboardService;
+import de.nproth.pin.receiver.SnoozeNoteReceiver;
 import de.nproth.pin.util.Timespan;
 
 /**
@@ -210,7 +211,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
             index++;
 
         //if there is a zero snooze duration exactly matching the current duration, set up this instead
-        for(int i = 0; i < mDurations.length; i++)
+        for(int i = 0; i < mZeroSnoozeDurations.length; i++)
             if(mZeroSnoozeDurations[i] == dur) {
                 dur = 0;
                 index = i;//Assuming that mDurations and mZeroDurations have equal length

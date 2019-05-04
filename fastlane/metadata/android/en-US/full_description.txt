@@ -10,10 +10,3 @@ A minimalistic note-taking app utilizing your phone's notification area:
 The app was build with <b>Material Design</b> in mind.
 
 All notes are stored in the app's database and survive reboots.
-
-<b>Troubleshooting</b>
-
-If your pins do not reappear directly after start-up, open the app because on some devices <b>p!n</b> may not be able to start in background.
-In this case try to enable 'Autostart' or disable some battery optimizations for this application.
-
-More information on this topic and solutions for various devices can be found <a href="https://dontkillmyapp.com/">here</a>.

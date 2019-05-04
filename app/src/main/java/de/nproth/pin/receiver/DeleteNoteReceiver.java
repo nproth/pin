@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.nproth.pin.NotesProvider;
+import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 
 /**
@@ -65,7 +66,8 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
                 Log.d("DeleteNoteProvider", String.format("Deleted %d rows", rows));
 
                 //update notifications
-                context.startService(new Intent(context, PinboardService.class));
+                //context.startService(new Intent(context, PinboardService.class));
+                Pinboard.get(context).updateAll(false);
 
                 return;
             default:
