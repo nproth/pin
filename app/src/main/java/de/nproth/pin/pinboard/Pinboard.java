@@ -10,6 +10,7 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -28,14 +29,13 @@ import de.nproth.pin.R;
 import de.nproth.pin.receiver.SnoozeNoteReceiver;
 import de.nproth.pin.util.Timespan;
 
+import static de.nproth.pin.pinboard.PinboardService.DEFAULT_SNOOZE_DURATION;
 import static de.nproth.pin.pinboard.PinboardService.PREFERENCE_SNOOZE_DURATION;
 
 /**
  * Updates notifications when pins are added / snoozed / deleted
  */
 public final class Pinboard {
-
-    private static Pinboard Me;
 
     /**
      * Only used prior to version 1.1
@@ -303,9 +303,10 @@ public final class Pinboard {
         return mSnoozeDuration;
     }
 
-    public void setSnoozeDuration(long dur) {
+    public Pinboard setSnoozeDuration(long dur) {
         mSnoozeDuration = dur;
-        updateVisible();
+        updateVisible(true);
+        return this;
     }
 
     public boolean getIsFixed() {
@@ -325,11 +326,11 @@ public final class Pinboard {
     }
 
     public static Pinboard get(Context ctx) {
+        Pinboard me;
         if(ctx == null)
             throw new NullPointerException("Cannot acquire instance of singleton 'Pinboard': Context is NULL ");
-        if(Me == null)
-            Me = new Pinboard(ctx.getApplicationContext());
-        Me.setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(ctx).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
-        return Me;
+        me = new Pinboard(ctx.getApplicationContext());
+        me.setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(ctx).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
+        return me;
     }
 }

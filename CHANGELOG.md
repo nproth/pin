@@ -1,4 +1,10 @@
 # CHANGELOG
+## v1.2.3
+- Fix snooze duration not updating
+
+## v1.2.2
+- Fix app crashing in background on startup
+
 ## v1.2.1
 - Add small pin snooze duration when slider is set to zero - thanks to _ewired_
 - Add button to pin notes in background and immediately snooze them

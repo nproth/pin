@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.UriMatcher;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -67,7 +68,7 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
 
                 //update notifications
                 //context.startService(new Intent(context, PinboardService.class));
-                Pinboard.get(context).updateAll(false);
+                Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateAll(true);
 
                 return;
             default:

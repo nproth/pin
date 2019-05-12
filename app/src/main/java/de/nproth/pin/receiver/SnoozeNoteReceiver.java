@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.UriMatcher;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import de.nproth.pin.R;
 import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.Timespan;
+
+import static de.nproth.pin.pinboard.PinboardService.PREFERENCE_SNOOZE_DURATION;
 
 public class SnoozeNoteReceiver extends BroadcastReceiver {
 
@@ -44,9 +47,9 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
         i.setAction(PinboardService.INTENT_ACTION_SNOOZE_PIN);
 
         //context.startService(i);
-        Pinboard pin = Pinboard.get(context);
+        Pinboard pin = Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
         onSnoozePins(context, pin.getSnoozeDuration(), data);
-        pin.updateAll(false);
+        pin.updateAll(true);
     }
 
     /**

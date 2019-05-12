@@ -36,6 +36,7 @@ public class PinboardService extends Service {
 
         public void setSnoozeDuration(long dur) {
             mPinboard.setSnoozeDuration(dur);
+            mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, dur).apply();
         }
 
         public boolean getIsFixed() {

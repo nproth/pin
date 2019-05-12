@@ -3,8 +3,10 @@ package de.nproth.pin.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import de.nproth.pin.NoteActivity;
 import de.nproth.pin.NotesProvider;
 import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
@@ -34,7 +36,7 @@ public class BootReceiver extends BroadcastReceiver {
             //context.startService(new Intent(context, PinboardService.class));
 
             //As a fix invoke Pinboard directly. Nevertheless this is bad style because it circumvents the encapsulation of Pinboard through its service
-            Pinboard.get(context).updateAll(true);
+            Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateAll(true);
         }
     }
 }
