@@ -1,0 +1,1 @@
+* Add 3 and 12 hours as snooze durations

@@ -1,0 +1,1 @@
+* Füge 3 und 12 Stunden als Zeitintervalle zum Verstecken von Notizen hinzu

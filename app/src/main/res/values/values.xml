@@ -11,9 +11,9 @@
         <item>10000</item><!-- 1:00h: 10sec -->
         <!--<item>30000</item><!- 1:30h: 30sec -->
         <!--<item>30000</item><!- 2:00h: 30sec -->
-        <!--<item>30000</item><!- 3:00h: 30sec -->
+        <item>15000</item><!-- 3:00h: 30sec -->
         <item>30000</item><!-- 6:00h: 10sec -->
-        <!--<item>30000</item><!- 12:00h: 30sec -->
+        <item>30000</item><!-- 12:00h: 30sec -->
         <item>30000</item><!-- 24:00h: 30sec -->
     </integer-array>
 
@@ -24,9 +24,9 @@
         <item>3600000</item><!-- 1:00h -->
         <!--<item>5400000</item><!- 1:30h -->
         <!--<item>7200000</item><!- 2:00h -->
-        <!--<item>10800000</item><!- 3:00h -->
+        <item>10800000</item><!-- 3:00h -->
         <item>21600000</item><!-- 6:00h -->
-        <!--<item>43200000</item><!- 12:00h -->
+        <item>43200000</item><!-- 12:00h -->
         <item>86400000</item><!-- 24:00h -->
     </integer-array>
 
@@ -37,9 +37,9 @@
         <item>300000</item><!-- 1:00h: 5min -->
         <!--<item>5400000</item><!- 1:30h -->
         <!--<item>600000</item><!- 2:00h: 10min -->
-        <!--<item>10800000</item><!- 3:00h -->
+        <item>600000</item><!-- 3:00h: 10min -->
         <item>900000</item><!-- 6:00h: 15min -->
-        <!--<item>36000000</item><!- 12:00h: 1h -->
+        <item>1800000</item><!-- 12:00h: 30min -->
         <item>3600000</item><!-- 24:00h: 1h -->
     </integer-array>
 </resources>
