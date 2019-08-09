@@ -68,7 +68,7 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
 
                 //update notifications
                 //context.startService(new Intent(context, PinboardService.class));
-                Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateAll(true);
+                Pinboard.get(context).updateAll(true);
 
                 return;
             default:

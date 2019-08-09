@@ -31,6 +31,8 @@ import de.nproth.pin.util.Timespan;
 
 import static de.nproth.pin.pinboard.PinboardService.DEFAULT_SNOOZE_DURATION;
 import static de.nproth.pin.pinboard.PinboardService.PREFERENCE_SNOOZE_DURATION;
+import static de.nproth.pin.pinboard.PinboardService.PREFERENCE_PERSISTENT_NOTIFICATIONS;
+import static de.nproth.pin.pinboard.PinboardService.DEFAULT_PERSISTENT_NOTIFICATIONS;
 
 /**
  * Updates notifications when pins are added / snoozed / deleted
@@ -54,6 +56,7 @@ public final class Pinboard {
 
 
     private final Context mContext;
+    private final SharedPreferences mPrefs;
     private final NotificationManagerCompat mNotify;
     private final NotificationManager mNManager;
     private final AlarmManager mAlarm;
@@ -68,6 +71,8 @@ public final class Pinboard {
 
     private Pinboard(@NonNull Context ctx) {
         mContext = ctx;
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
         mNManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotify = NotificationManagerCompat.from(mContext);
@@ -105,6 +110,9 @@ public final class Pinboard {
     }
 
     private void update(long timeNow, boolean silent, String where, String... wargs) {
+
+        mSnoozeDuration = getSnoozeDuration();
+        mFixed = getIsFixed();
 
         long currentCheck = timeNow;
         long alarmTime = 0;//0 means that no alarm should be set
@@ -196,15 +204,20 @@ public final class Pinboard {
 
         //schedule an alarm
         if (alarmTime > 0) {
+            long latency = alarmTime - System.currentTimeMillis();
+            if(latency <= 0)
+                latency = 1;//make sure latency is positive
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//use jobScheduler if possible
 
-                long latency = alarmTime - System.currentTimeMillis();
                 JobInfo job = new JobInfo.Builder(JOB_ID, new ComponentName(mContext, NotificationJobService.class))
                         .setMinimumLatency(latency).build();
                 mScheduler.schedule(job);
                 Log.d("NotificationService", String.format("Set up job running in ~ %dmin or ~ %ds", latency / 1000 / 60, latency / 1000));
 
             } else {//Or fallback to Alarm Manager
+                long now = System.currentTimeMillis();
+                if(alarmTime <= now + 500)//Make sure alarm is scheduled
+                    alarmTime = now + 500;
                 mAlarm.set(AlarmManager.RTC_WAKEUP, alarmTime, PendingIntent.getBroadcast(mContext, 0, new Intent(mContext, AlarmReceiver.class), 0));
 
                 long mins = (alarmTime - currentCheck) / 1000 / 60;
@@ -300,20 +313,22 @@ public final class Pinboard {
     }
 
     public long getSnoozeDuration() {
-        return mSnoozeDuration;
+        return mPrefs.getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION);
     }
 
     public Pinboard setSnoozeDuration(long dur) {
+        mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, dur).commit();
         mSnoozeDuration = dur;
         updateVisible(true);
         return this;
     }
 
     public boolean getIsFixed() {
-        return mFixed;
+        return mPrefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, DEFAULT_PERSISTENT_NOTIFICATIONS);
     }
 
     public void setIsFixed(boolean fix) {
+        mPrefs.edit().putBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, fix).commit();
         mFixed = fix;
         updateVisible();
     }
@@ -322,15 +337,20 @@ public final class Pinboard {
      * Saves the snooze duration in shared preferences
      */
     public void destroy() {
-        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putLong(PREFERENCE_SNOOZE_DURATION, getSnoozeDuration()).commit();
+        //PreferenceManager.getDefaultSharedPreferences(mContext).edit().putLong(PREFERENCE_SNOOZE_DURATION, getSnoozeDuration()).commit();
+        //Nothing here
     }
 
     public static Pinboard get(Context ctx) {
         Pinboard me;
         if(ctx == null)
             throw new NullPointerException("Cannot acquire instance of singleton 'Pinboard': Context is NULL ");
+
+
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         me = new Pinboard(ctx.getApplicationContext());
-        me.setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(ctx).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
+        //me.setSnoozeDuration(mPrefs.getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
+        //me.setIsFixed(mPrefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, DEFAULT_PERSISTENT_NOTIFICATIONS));
         return me;
     }
 }

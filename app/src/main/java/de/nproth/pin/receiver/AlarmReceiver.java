@@ -21,6 +21,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, PinboardService.class);
         i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
         //context.startService(i);
-        Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateVisible(false);
+        Pinboard.get(context).updateVisible(false);
     }
 }

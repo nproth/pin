@@ -1,0 +1,2 @@
+* Bugfix: Beim Verstecken von Pins bleiben andere Notizen in der Benachrichtigungsleiste fixiert
+* Im Eingabefeld für Notizen werden Satzanfänge nun standardmäßig groß geschrieben

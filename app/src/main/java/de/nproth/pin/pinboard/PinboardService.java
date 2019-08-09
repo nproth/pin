@@ -10,6 +10,10 @@ import android.preference.PreferenceManager;
 import de.nproth.pin.BuildConfig;
 import de.nproth.pin.receiver.SnoozeNoteReceiver;
 
+
+/**
+ * Bound by {@link de.nproth.pin.NoteActivity}, used to update notifications via {@link Pinboard}
+ */
 public class PinboardService extends Service {
 
     public static final String INTENT_ACTION_SNOOZE_PIN = BuildConfig.APPLICATION_ID + ".intent.action.snooze";
@@ -36,7 +40,7 @@ public class PinboardService extends Service {
 
         public void setSnoozeDuration(long dur) {
             mPinboard.setSnoozeDuration(dur);
-            mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, dur).apply();
+            //mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, dur).apply();
         }
 
         public boolean getIsFixed() {
@@ -71,8 +75,8 @@ public class PinboardService extends Service {
 
             mPinboard = Pinboard.get(this);
 
-            mPinboard.setSnoozeDuration(mPrefs.getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
-            mPinboard.setIsFixed(mPrefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, DEFAULT_PERSISTENT_NOTIFICATIONS));
+            //mPinboard.setSnoozeDuration(mPrefs.getLong(PREFERENCE_SNOOZE_DURATION, DEFAULT_SNOOZE_DURATION));
+            //mPinboard.setIsFixed(mPrefs.getBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, DEFAULT_PERSISTENT_NOTIFICATIONS));
 
             mPinboard.updateAll(true);
         }
@@ -83,8 +87,8 @@ public class PinboardService extends Service {
         super.onDestroy();
 
         //Committing the changed preference values is deliberately done synchronously (blocking), so that the Service is not destroyed before the transaction is completed.
-        mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, mPinboard.getSnoozeDuration())
-                .putBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, mPinboard.getIsFixed()).commit();
+        //mPrefs.edit().putLong(PREFERENCE_SNOOZE_DURATION, mPinboard.getSnoozeDuration())
+          //      .putBoolean(PREFERENCE_PERSISTENT_NOTIFICATIONS, mPinboard.getIsFixed()).commit();
     }
 
     @Override

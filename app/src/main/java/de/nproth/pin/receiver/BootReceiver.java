@@ -36,7 +36,7 @@ public class BootReceiver extends BroadcastReceiver {
             //context.startService(new Intent(context, PinboardService.class));
 
             //As a fix invoke Pinboard directly. Nevertheless this is bad style because it circumvents the encapsulation of Pinboard through its service
-            Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateAll(true);
+            Pinboard.get(context).updateAll(true);
         }
     }
 }

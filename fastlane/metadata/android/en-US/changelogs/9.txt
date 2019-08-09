@@ -1,0 +1,2 @@
+* Fix bug that causes snoozing a note to unlock all pins
+* Autocapitalize sentences in note input field

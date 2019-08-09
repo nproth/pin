@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -47,7 +48,9 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
         i.setAction(PinboardService.INTENT_ACTION_SNOOZE_PIN);
 
         //context.startService(i);
-        Pinboard pin = Pinboard.get(context).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(context).getLong(PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION));
+
+        Pinboard pin = Pinboard.get(context);
+
         onSnoozePins(context, pin.getSnoozeDuration(), data);
         pin.updateAll(true);
     }
@@ -79,7 +82,7 @@ public class SnoozeNoteReceiver extends BroadcastReceiver {
                 //continue to next
             case NOTES_LIST:
                 int rows = context.getContentResolver().update(data, cv, "text IS NOT NULL", null);//snooze either on note item or all notes which are not marked as deleted (text is not null)
-                Log.d("SnoozeNoteProvider", String.format("Snoozed %d rows", rows));
+                Log.d("SnoozeNoteReceiver", String.format("Snoozed %d rows", rows));
 
                 //show a toast if the user had dismissed this pin to indicate that this note will pop up again after some delay
                 Toast.makeText(context, context.getResources().getString(R.string.toast_pin_dismissed, new Timespan(context, snoozeDuration).toString()), Toast.LENGTH_SHORT).show();

@@ -23,7 +23,7 @@ public class NotificationJobService extends JobService {
         Intent i = new Intent(this, PinboardService.class);
         i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
         //startService(i);
-        Pinboard.get(this).setSnoozeDuration(PreferenceManager.getDefaultSharedPreferences(this).getLong(PinboardService.PREFERENCE_SNOOZE_DURATION, PinboardService.DEFAULT_SNOOZE_DURATION)).updateVisible(false);
+        Pinboard.get(this).updateAll(false);
         return false;//work is done at this point
     }
 
