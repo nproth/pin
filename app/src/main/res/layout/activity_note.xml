@@ -68,7 +68,9 @@
         android:paddingEnd="72dp"
         android:paddingRight="72dp"
         android:paddingBottom="8dp"
-        android:textCursorDrawable="@null" />
+        android:textCursorDrawable="@null">
+        <requestFocus/>
+    </EditText>
 
     <ImageButton
         android:id="@+id/note_pin_background"
