@@ -6,10 +6,10 @@
     <string name="channel_description">Fäster dina sparade lappar i aviseringslistan.</string>
 
     <string name="channel_name_pin">Nyss fästa lappar</string>
-    <string name="channel_description_pin">Nyligen fästa lappar skickas till den här aviseringskanalen för att visas utan ljud.</string>
+    <string name="channel_description_pin">Nyligen fästa lappar skickas till den här tysta aviseringskanalen.</string>
 
-    <string name="channel_name_wake">Vaknandesignal</string>
-    <string name="channel_description_wake">Snoozade lappar som vaknar skickas till den här aviseringskanalen och avger en signal.</string>
+    <string name="channel_name_wake">Snoozeslut</string>
+    <string name="channel_description_wake">Lappar vars snoozetid går ut skickas till den här aviseringskanalen och gör sig påminda med hjälp av ljud och/eller vibration.</string>
 
     <plurals name="notification_summary_title">
         <item quantity="one">%d lapp</item>
