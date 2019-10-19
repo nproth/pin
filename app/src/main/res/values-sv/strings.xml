@@ -36,8 +36,8 @@
 
     <string name="toast_show_all">Alla lappar visas</string>
 
-    <string name="toast_fix_pins">Lappar</string>
-    <string name="toast_unfix_pins">Lås upp lappar</string>
+    <string name="toast_fix_pins">Lapparna låstes</string>
+    <string name="toast_unfix_pins">Lapparna låstes upp</string>
 
     <string name="title_battery_optimization">Ursäkta</string>
 
