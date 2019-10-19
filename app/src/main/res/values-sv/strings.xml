@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name" translatable="false">p!n</string>
+    <string name="note_text_hint">Skriv en lapp</string>
+
+    <string name="channel_name">Lappar</string>
+    <string name="channel_description">Fäster dina sparade lappar i aviseringslistan.</string>
+
+    <string name="channel_name_pin">Nyss fästa lappar</string>
+    <string name="channel_description_pin">Nyligen fästa lappar skickas till den här aviseringskanalen för att visas utan ljud.</string>
+
+    <string name="channel_name_wake">Vaknandesignal</string>
+    <string name="channel_description_wake">Snoozade lappar som vaknar skickas till den här aviseringskanalen och avger en signal.</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d lapp</item>
+        <item quantity="other">%d lappar</item>
+    </plurals>
+
+    <string name="notification_summary_summary">+%d till</string>
+
+    <string name="text_default_button_snooze_duration" translatable="false">-:--</string>
+    <string name="ftext_button_snooze_duration" translatable="false">%1$01d:%2$02d</string>
+    <string name="ftext_button_zero_snooze" translatable="false">%1$2ds</string>
+
+    <string name="action_delete">Klart</string>
+    <string name="action_snooze">Snooza i %1$s</string>
+    <string name="action_edit">Redigera</string>
+
+    <string name="toast_pin_dismissed">Snoozades i %1$s</string>
+    <string name="toast_pin_background">Visas om %1$s</string>
+
+    <string name="symbol_time_seconds" translatable="false">s</string>
+    <string name="symbol_time_minutes" translatable="false">min</string>
+    <string name="symbol_time_hours" translatable="false">h</string>
+    <string name="symbol_time_days" translatable="false">d</string>
+
+    <string name="toast_show_all">Alla lappar visas</string>
+
+    <string name="toast_fix_pins">Lappar</string>
+    <string name="toast_unfix_pins">Lås upp lappar</string>
+
+    <string name="title_battery_optimization">Ursäkta</string>
+
+    <string name="warn_battery_optimization">Jag kan inte visa dina lappar vid systemstart. Det kanske hjälper om du avaktiverar optimerad batteriförbrukning för den här appen.</string>
+
+    <string name="dialog_acknowledged">OK</string>
+    <string name="dialog_never_again">Visa inte igen</string>
+    <string name="dialog_more_info">Mer info</string>
+
+</resources>
