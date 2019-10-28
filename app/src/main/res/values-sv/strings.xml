@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">p!n</string>
     <string name="note_text_hint">Skriv en lapp</string>
 
     <string name="channel_name">Lappar</string>
@@ -18,21 +17,12 @@
 
     <string name="notification_summary_summary">+%d till</string>
 
-    <string name="text_default_button_snooze_duration" translatable="false">-:--</string>
-    <string name="ftext_button_snooze_duration" translatable="false">%1$01d:%2$02d</string>
-    <string name="ftext_button_zero_snooze" translatable="false">%1$2ds</string>
-
     <string name="action_delete">Klart</string>
     <string name="action_snooze">Snooza i %1$s</string>
     <string name="action_edit">Redigera</string>
 
     <string name="toast_pin_dismissed">Snoozades i %1$s</string>
     <string name="toast_pin_background">Visas om %1$s</string>
-
-    <string name="symbol_time_seconds" translatable="false">s</string>
-    <string name="symbol_time_minutes" translatable="false">min</string>
-    <string name="symbol_time_hours" translatable="false">h</string>
-    <string name="symbol_time_days" translatable="false">d</string>
 
     <string name="toast_show_all">Alla lappar visas</string>
 
