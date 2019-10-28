@@ -60,6 +60,17 @@
             android:name=".receiver.NotificationJobService"
             android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".PinTileService"
+            android:label="@string/qstile_label"
+            android:icon="@drawable/ic_pin_icon_white"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

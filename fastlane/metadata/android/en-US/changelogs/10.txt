@@ -1,0 +1,3 @@
+* Add Quick Settings Tile that opens p!n
+* Add Swedish translation
+* Automatically open keyboard when p!n launches

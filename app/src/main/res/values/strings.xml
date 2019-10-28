@@ -47,4 +47,6 @@
     <string name="dialog_never_again">Never Show Again</string>
     <string name="dialog_more_info">More Information</string>
 
+    <string name="qstile_label">Open p!n</string>
+
 </resources>

@@ -1,4 +1,17 @@
 # CHANGELOG
+
+## v1.2.6
+- Add Quick Settings Tile that opens p!n
+- Add Swedish translation
+- Automatically open keyboard when p!n launches
+
+## v1.2.5
+- Fix bug that causes snoozing a note to unlock all pins
+- Autocapitalize sentences in note input field
+
+## v1.2.4
+- Add 3 and 12 hours as snooze durations
+
 ## v1.2.3
 - Fix snooze duration not updating
 

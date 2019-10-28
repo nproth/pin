@@ -1,0 +1,3 @@
+* Quick Settings Tile zum Öffnen von p!n
+* Übersetzung ins Schwedische
+* Tastatur öffnet sich automatisch beim App-Start
