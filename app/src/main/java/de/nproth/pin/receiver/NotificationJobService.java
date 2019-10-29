@@ -1,3 +1,10 @@
+/*
+ * Changelog
+ *
+ * 2019-10-29
+ * - Rewrite and move to new model
+ */
+
 package de.nproth.pin.receiver;
 
 import android.annotation.TargetApi;
@@ -6,6 +13,10 @@ import android.app.job.JobService;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 
+import de.nproth.pin.model.DatabaseManager;
+import de.nproth.pin.model.NotificationManager;
+import de.nproth.pin.model.Pin;
+import de.nproth.pin.model.SettingsManager;
 import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.receiver.AlarmReceiver;
@@ -19,12 +30,17 @@ public class NotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters params) {
-        //update notifications
-        Intent i = new Intent(this, PinboardService.class);
-        i.setAction(PinboardService.INTENT_ACTION_WAKE_UP);
-        //startService(i);
-        Pinboard.get(this).updateAll(false);
-        return false;//work is done at this point
+        long now = System.currentTimeMillis();
+        long lastCheck = SettingsManager.getLastSnoozedCheck(this);
+
+        // Wake up all pins with lastCheck < wake_up < now
+        Pin[] pins = DatabaseManager.getSnoozedPins(this, lastCheck);
+        NotificationManager.wakeUpPins(this, pins);
+
+        SettingsManager.setLastSnoozedCheck(this, now);
+
+        // We're done here
+        return false;
     }
 
     @Override

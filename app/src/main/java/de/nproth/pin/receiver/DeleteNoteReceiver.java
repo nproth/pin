@@ -1,3 +1,10 @@
+/*
+ * Changelog
+ *
+ * 2019-10-29
+ * - Rewrite and move to new model
+ */
+
 package de.nproth.pin.receiver;
 
 import android.content.BroadcastReceiver;
@@ -11,6 +18,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.nproth.pin.NotesProvider;
+import de.nproth.pin.model.DatabaseManager;
+import de.nproth.pin.model.NotificationManager;
+import de.nproth.pin.model.Pin;
 import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 
@@ -39,19 +49,6 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
             return;
         }
 
-        /*
-         * For some reason I forgot the pins must not be deleted from the database right away.
-         * I think it had something to do with the _id value in the database which is needed to reference visible notifications.
-         * So we still need it in order to hide the deleted pins.
-         *
-         * The deleted pins are cleaned up on every boot (if the system allows us to catch the boot completed intent. For more information see BootReceiver)
-         */
-
-        ContentValues cv = new ContentValues();
-
-        cv.putNull(NotesProvider.Notes.TEXT);//setting text to NULL marks note as deleted, it will be removed at next boot
-        cv.put(NotesProvider.Notes.MODIFIED, System.currentTimeMillis());
-
         switch(mUris.match(data)) {
             case NOTES_ITEM:
                 //Check if last path segment is really just a valid id (probably redundant)
@@ -61,16 +58,19 @@ public class DeleteNoteReceiver extends BroadcastReceiver {
                     Log.e("DeleteNoteReceiver", String.format("Could not delete note item: invalid id '%s' in uri '%s'", idstring, data.toString()));
                     return;
                 }
-                //continue to next
+
+                int id = Integer.parseInt(idstring);
+
+                Pin pin = DatabaseManager.getPin(context, id);
+                NotificationManager.hidePin(context, pin);
+                DatabaseManager.deletePin(context, pin);
+                break;
+
             case NOTES_LIST:
-                int rows = context.getContentResolver().update(data, cv, "text IS NOT NULL", null);//delete either on note item or all notes which are not marked as deleted already (text is not null)
-                Log.d("DeleteNoteProvider", String.format("Deleted %d rows", rows));
-
-                //update notifications
-                //context.startService(new Intent(context, PinboardService.class));
-                Pinboard.get(context).updateAll(true);
-
+                NotificationManager.hideAllPins(context);
+                DatabaseManager.deleteAllPins(context);
                 return;
+
             default:
                 Log.e("DeleteNoteReceiver", String.format("Could not snooze note: invalid uri '%s'", data.toString()));
                 return;

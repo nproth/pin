@@ -1,3 +1,10 @@
+/*
+ * Changelog
+ *
+ * 2019-10-29
+ * - Rewrite and move to new model
+ */
+
 package de.nproth.pin.receiver;
 
 import android.content.BroadcastReceiver;
@@ -8,6 +15,7 @@ import android.util.Log;
 
 import de.nproth.pin.NoteActivity;
 import de.nproth.pin.NotesProvider;
+import de.nproth.pin.model.NotificationManager;
 import de.nproth.pin.pinboard.Pinboard;
 import de.nproth.pin.pinboard.PinboardService;
 import de.nproth.pin.util.LifecycleWatcher;
@@ -25,18 +33,11 @@ public class BootReceiver extends BroadcastReceiver {
         if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             Log.d("BootReceiver", "received BOOT_COMPLETED");
 
-            //Log that boot completed was received
-            LifecycleWatcher.informBootReceived();
-
             //First clean up database
+            //TODO remove as pins will be deleted immediately in the future
             context.getContentResolver().delete(NotesProvider.Notes.NOTES_URI, "text IS NULL", null);
 
-            //Show pins
-            //On newer Android versions apps are no longer allowed to start services when they are in background
-            //context.startService(new Intent(context, PinboardService.class));
-
-            //As a fix invoke Pinboard directly. Nevertheless this is bad style because it circumvents the encapsulation of Pinboard through its service
-            Pinboard.get(context).updateAll(true);
+            NotificationManager.showAllPins(context);
         }
     }
 }
