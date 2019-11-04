@@ -36,5 +36,7 @@
     <string name="dialog_acknowledged">OK</string>
     <string name="dialog_never_again">Visa inte igen</string>
     <string name="dialog_more_info">Mer info</string>
+    
+    <string name="qstile_label">Öppna p!n</string>
 
 </resources>
