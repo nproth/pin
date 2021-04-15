@@ -2,9 +2,6 @@
     <string name="app_name" translatable="false">p!n</string>
     <string name="note_text_hint">Your note</string>
 
-    <string name="channel_name">Notes</string>
-    <string name="channel_description">Pins your saved notes to the notification drawer.</string>
-
     <string name="channel_name_pin">Newly added notes</string>
     <string name="channel_description_pin">Newly created notes are pushed to this notification channel to be shown silently.</string>
 
@@ -15,8 +12,6 @@
         <item quantity="one">%d pin</item>
         <item quantity="other">%d pins</item>
     </plurals>
-
-    <string name="notification_summary_summary">+%d more</string>
 
     <string name="text_default_button_snooze_duration" translatable="false">-:--</string>
     <string name="ftext_button_snooze_duration" translatable="false">%1$01d:%2$02d</string>
@@ -38,14 +33,6 @@
 
     <string name="toast_fix_pins">Lock Pins</string>
     <string name="toast_unfix_pins">Unlock Pins</string>
-
-    <string name="title_battery_optimization">I\'m sorry</string>
-
-    <string name="warn_battery_optimization">I can\'t show your pins at startup. It might help to disable battery optimizations for this app.</string>
-
-    <string name="dialog_acknowledged">OK</string>
-    <string name="dialog_never_again">Never Show Again</string>
-    <string name="dialog_more_info">More Information</string>
 
     <string name="qstile_label">Open p!n</string>
 

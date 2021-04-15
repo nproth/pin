@@ -1,9 +1,6 @@
 <resources>
     <string name="note_text_hint">Skriv en lapp</string>
 
-    <string name="channel_name">Lappar</string>
-    <string name="channel_description">Fäster dina sparade lappar i aviseringslistan.</string>
-
     <string name="channel_name_pin">Nyss fästa lappar</string>
     <string name="channel_description_pin">Nyligen fästa lappar skickas till den här tysta aviseringskanalen.</string>
 
@@ -14,8 +11,6 @@
         <item quantity="one">%d lapp</item>
         <item quantity="other">%d lappar</item>
     </plurals>
-
-    <string name="notification_summary_summary">+%d till</string>
 
     <string name="action_delete">Klart</string>
     <string name="action_snooze">Snooza i %1$s</string>
@@ -29,14 +24,6 @@
     <string name="toast_fix_pins">Lapparna låstes</string>
     <string name="toast_unfix_pins">Lapparna låstes upp</string>
 
-    <string name="title_battery_optimization">Ursäkta</string>
-
-    <string name="warn_battery_optimization">Jag kan inte visa dina lappar vid systemstart. Det kanske hjälper om du avaktiverar optimerad batteriförbrukning för den här appen.</string>
-
-    <string name="dialog_acknowledged">OK</string>
-    <string name="dialog_never_again">Visa inte igen</string>
-    <string name="dialog_more_info">Mer info</string>
-    
     <string name="qstile_label">Öppna p!n</string>
 
 </resources>

@@ -2,9 +2,6 @@
 <resources>
     <string name="note_text_hint">Neue Notiz</string>
 
-    <string name="channel_name">Notizen</string>
-    <string name="channel_description">Zeigt Notizen in der Benachrichtigungsleiste</string>
-
     <string name="channel_name_pin">Neu erstellte Notizen</string>
     <string name="channel_description_pin">Neu erstellte Notizen werden zu diesem stummen Benachrichtigungskanal hinzugefügt</string>
 
@@ -15,8 +12,6 @@
         <item quantity="one">%d Notiz</item>
         <item quantity="other">%d Notizen</item>
     </plurals>
-
-    <string name="notification_summary_summary">+%d weitere</string>
 
     <string name="action_delete">Löschen</string>
     <string name="action_snooze">%1$s Verbergen</string>
@@ -29,14 +24,6 @@
 
     <string name="toast_fix_pins">Notizen fixiert</string>
     <string name="toast_unfix_pins">Notizen nicht fixiert</string>
-
-    <string name="title_battery_optimization">Entschuldigung</string>
-
-    <string name="warn_battery_optimization">Ich konnte die Notizen nicht nach dem Start anzeigen. Es könnte helfen, einige Energiespar-Optionen für diese App auszuschalten.</string>
-
-    <string name="dialog_acknowledged">OK</string>
-    <string name="dialog_never_again">Nie wieder zeigen</string>
-    <string name="dialog_more_info">Weitere Informationen</string>
 
     <string name="qstile_label">p!n öffnen</string>
 </resources>
