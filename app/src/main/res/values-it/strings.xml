@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="note_text_hint">Your note</string>
+    <string name="note_text_hint">Nota</string>
 
-    <string name="channel_name_pin">Newly added notes</string>
-    <string name="channel_description_pin">Newly created notes are pushed to this notification channel to be shown silently.</string>
+    <string name="channel_name_pin">Note appena aggiunte</string>
+    <string name="channel_description_pin">Le note appena create verrano inviate nell\'area di notifica senza avviso acustico.</string>
 
-    <string name="channel_name_wake">Wake up alert</string>
-    <string name="channel_description_wake">Snoozed notes that wake up are pushed to this notification channel and issue an alert.</string>
+    <string name="channel_name_wake">Notifica di riattivazione</string>
+    <string name="channel_description_wake">Le note posticipate che si riattivano verranno inviate nell\'area di notifica con un avviso acustico.</string>
 
     <plurals name="notification_summary_title">
         <item quantity="one">%d pin</item>
-        <item quantity="other">%d pins</item>
+        <item quantity="other">%d pin</item>
     </plurals>
 
-    <string name="action_delete">Done</string>
-    <string name="action_snooze">Snooze %1$s</string>
-    <string name="action_edit">Edit</string>
+    <string name="action_delete">Fatto</string>
+    <string name="action_snooze">Posticipa %1$s</string>
+    <string name="action_edit">Modifica</string>
 
-    <string name="toast_pin_dismissed">Snoozed for %1$s</string>
-    <string name="toast_pin_background">Show in %1$s</string>
+    <string name="toast_pin_dismissed">Posticipato di %1$s</string>
+    <string name="toast_pin_background">Mostra in %1$s</string>
 
-    <string name="toast_show_all">Show All Notes</string>
+    <string name="toast_show_all">Mostra tutte le note</string>
 
-    <string name="toast_fix_pins">Lock Pins</string>
-    <string name="toast_unfix_pins">Unlock Pins</string>
+    <string name="toast_fix_pins">Fissa notifiche</string>
+    <string name="toast_unfix_pins">Sblocca notifiche</string>
 
-    <string name="qstile_label">Open p!n</string>
+    <string name="qstile_label">Apri p!n</string>
 
 </resources>
