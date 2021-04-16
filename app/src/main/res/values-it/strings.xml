@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="note_text_hint">Your note</string>
+
+    <string name="channel_name_pin">Newly added notes</string>
+    <string name="channel_description_pin">Newly created notes are pushed to this notification channel to be shown silently.</string>
+
+    <string name="channel_name_wake">Wake up alert</string>
+    <string name="channel_description_wake">Snoozed notes that wake up are pushed to this notification channel and issue an alert.</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d pin</item>
+        <item quantity="other">%d pins</item>
+    </plurals>
+
+    <string name="action_delete">Done</string>
+    <string name="action_snooze">Snooze %1$s</string>
+    <string name="action_edit">Edit</string>
+
+    <string name="toast_pin_dismissed">Snoozed for %1$s</string>
+    <string name="toast_pin_background">Show in %1$s</string>
+
+    <string name="toast_show_all">Show All Notes</string>
+
+    <string name="toast_fix_pins">Lock Pins</string>
+    <string name="toast_unfix_pins">Unlock Pins</string>
+
+    <string name="qstile_label">Open p!n</string>
+
+</resources>
