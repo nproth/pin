@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimaryLight</item>
 
         <item name="android:windowBackground">@color/activityBackground</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -13,7 +13,17 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
 
+        <!--<item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>-->
+
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+
         <!--<item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>-->
+    </style>
+
+    <style name="WindowAnimationStyle">
+        <item name="android:windowEnterAnimation">@anim/activity_enter</item>
+        <item name="android:windowExitAnimation">@anim/activity_exit</item>
     </style>
 
 </resources>

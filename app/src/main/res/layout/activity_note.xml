@@ -7,6 +7,7 @@
     android:clickable="true"
     android:focusable="false"
     android:onClick="onParentLayoutClicked"
+    android:theme="@style/AppTheme"
     tools:context=".NoteActivity">
 
     <de.nproth.pin.RotaryControlView
@@ -47,7 +48,7 @@
         android:stateListAnimator="@animator/state_anim_button"
         android:text="@string/text_default_button_snooze_duration"
         android:textAllCaps="false"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorSecondary" />
 
     <EditText
         android:id="@+id/note_input_field"
@@ -67,8 +68,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="72dp"
         android:paddingRight="72dp"
-        android:paddingBottom="8dp"
-        android:textCursorDrawable="@null">
+        android:paddingBottom="8dp">
         <requestFocus/>
     </EditText>
 
