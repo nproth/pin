@@ -6,8 +6,8 @@ android {
         applicationId "de.nproth.pin"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 10
-        versionName "1.2.6"
+        versionCode 11
+        versionName "1.2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "authority_provider_notes", applicationId + '.notes'
     }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.7
+- Add Italian translation
+- Fix text selection color
+
 ## v1.2.6
 - Add Quick Settings Tile that opens p!n
 - Add Swedish translation

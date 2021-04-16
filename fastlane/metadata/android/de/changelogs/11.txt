@@ -1,0 +1,2 @@
+* Italienische Übersetzung
+* Bugfix: Textauswahl ist nun sichtbar

@@ -1,0 +1,2 @@
+* Add Italian translation
+* Fix text selection color
