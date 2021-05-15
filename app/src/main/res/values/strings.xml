@@ -24,10 +24,10 @@
     <string name="toast_pin_dismissed">Snoozed for %1$s</string>
     <string name="toast_pin_background">Show in %1$s</string>
 
-    <string name="symbol_time_seconds" translatable="false">s</string>
-    <string name="symbol_time_minutes" translatable="false">min</string>
-    <string name="symbol_time_hours" translatable="false">h</string>
-    <string name="symbol_time_days" translatable="false">d</string>
+    <string name="symbol_time_seconds">s</string>
+    <string name="symbol_time_minutes">min</string>
+    <string name="symbol_time_hours">h</string>
+    <string name="symbol_time_days">d</string>
 
     <string name="toast_show_all">Show All Notes</string>
 

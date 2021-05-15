@@ -19,6 +19,11 @@
     <string name="toast_pin_dismissed">Snoozades i %1$s</string>
     <string name="toast_pin_background">Visas om %1$s</string>
 
+    <string name="symbol_time_seconds">s</string>
+    <string name="symbol_time_minutes">min</string>
+    <string name="symbol_time_hours">h</string>
+    <string name="symbol_time_days">d</string>
+
     <string name="toast_show_all">Alla lappar visas</string>
 
     <string name="toast_fix_pins">Lapparna låstes</string>
