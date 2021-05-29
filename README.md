@@ -21,6 +21,8 @@ Start the app to create a new pin.
 
 - There's a number in a semicircle  - that's the number of hours:minutes that
   the pin will wait for if snoozed. Tap it to change the time.
+  
+- The semicircle acts as a slider and adjusts the snooze time.
 
 - Click the circular pin button to create your pin.
 
