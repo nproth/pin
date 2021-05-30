@@ -1,0 +1,12 @@
+Un'app minimalista per scrivere note da mostrare come promemoria nell'area di notifica del telefono:
+
+<ul>
+<li>Scrivi le tue note e salvale come notifiche</li>
+<li>Modifica le tue note</li>
+<li>Elimina le tue note</li>
+<li>Nascondi le tue note per un periodo di tempo specifico</li>
+</ul>
+
+L'app è stata progettata tenendo conto delle linee guida del <b>Material Design</b>.
+
+Le note create vengono salvate nel database dell'app e verranno mostrate nuovamente anche dopo un riavvio del telefono. (Verificare che le impostazioni di risparmio energetico del sistema permettano all'app di funzionare in background)
