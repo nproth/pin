@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name" translatable="false">p!n</string>
+    <string name="note_text_hint">メモを入力</string>
+
+    <string name="channel_name_pin">新しく追加したメモ</string>
+    <string name="channel_description_pin">新たに作成されたメモは、この通知チャネルにプッシュされ、サイレント表示されます。</string>
+
+    <string name="channel_name_wake">Wake up alert</string>
+    <string name="channel_description_wake">スヌーズされたメモは、この通知チャネルにプッシュされ、アラートがなります。</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d 個のメモ</item>
+        <item quantity="other">%d 個のメモ</item>
+    </plurals>
+
+    <string name="text_default_button_snooze_duration" translatable="false">-:--</string>
+    <string name="ftext_button_snooze_duration" translatable="false">%1$01d:%2$02d</string>
+    <string name="ftext_button_zero_snooze" translatable="false">%1$2ds</string>
+
+    <string name="action_delete">完了</string>
+    <string name="action_snooze">%1$s スヌーズ</string>
+    <string name="action_edit">編集</string>
+
+    <string name="toast_pin_dismissed">%1$s スヌーズされました</string>
+    <string name="toast_pin_background">%1$s で表示されます</string>
+
+    <string name="symbol_time_seconds">秒間</string>
+    <string name="symbol_time_minutes">分間</string>
+    <string name="symbol_time_hours">時間</string>
+    <string name="symbol_time_days">日</string>
+
+    <string name="toast_show_all">全てのノートを表示</string>
+
+    <string name="toast_fix_pins">ピン留めをロック</string>
+    <string name="toast_unfix_pins">ピン留めのロックを解除</string>
+
+    <string name="qstile_label">p!nを開く</string>
+
+</resources>
