@@ -9,7 +9,6 @@
     <string name="channel_description_wake">スヌーズされたメモは、この通知チャネルにプッシュされ、アラートがなります。</string>
 
     <plurals name="notification_summary_title">
-        <item quantity="one">%d 個のメモ</item>
         <item quantity="other">%d 個のメモ</item>
     </plurals>
 
