@@ -9,13 +9,6 @@
 
         <item name="android:windowBackground">@color/activityBackground</item>
         <item name="android:windowIsTranslucent">true</item>
-
-        <!--<item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>-->
-
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-
-        <!--<item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>-->
     </style>
 
     <style name="WindowAnimationStyle">

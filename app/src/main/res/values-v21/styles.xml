@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Base application theme. -->
@@ -9,16 +10,8 @@
 
         <item name="android:windowBackground">@color/activityBackground</item>
         <item name="android:windowIsTranslucent">true</item>
-
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:fitsSystemWindows">true</item>
-
-        <!--<item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>-->
-
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-
-        <!--<item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>-->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/activityBackground</item>
     </style>
 
     <style name="WindowAnimationStyle">

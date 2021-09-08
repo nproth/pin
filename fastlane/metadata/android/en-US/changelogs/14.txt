@@ -1,0 +1,1 @@
+* Fix shifted text selection overflow menu
