@@ -8,7 +8,8 @@
     android:focusable="false"
     android:onClick="onParentLayoutClicked"
     android:theme="@style/AppTheme"
-    tools:context=".NoteActivity">
+    tools:context=".NoteActivity"
+    tools:ignore="UsingOnClickInXml">
 
     <de.nproth.pin.RotaryControlView
         android:id="@+id/snooze_duration_slider"
