@@ -89,6 +89,7 @@ public class NoteActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void onNewIntent(Intent i) {
+        super.onNewIntent(i);
         setIntent(i);
         prepareEditPin();
     }
