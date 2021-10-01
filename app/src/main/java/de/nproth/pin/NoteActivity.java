@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.nproth.pin.pinboard.PinboardService;
-import de.nproth.pin.receiver.SnoozeNoteReceiver;
 import de.nproth.pin.util.Timespan;
 
 /**
