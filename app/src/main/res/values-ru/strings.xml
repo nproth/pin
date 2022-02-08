@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="note_text_hint">Ваша записка</string>
+
+    <string name="channel_name_pin">Новые записки</string>
+    <string name="channel_description_pin">Новые записки тихо показываются тут.</string>
+
+    <string name="channel_name_wake">Возвращающиеся записки</string>
+    <string name="channel_description_wake">Отложенные записки возвращаются сюда.</string>
+
+    <plurals name="notification_summary_title">
+        <item quantity="one">%d Записка</item>
+        <item quantity="other">%d Записки</item>
+    </plurals>
+
+    <string name="action_delete">Удалить</string>
+    <string name="action_snooze">Отложить на %1$s</string>
+    <string name="action_edit">Править</string>
+
+    <string name="toast_pin_dismissed">Отложено на %1$s</string>
+    <string name="toast_pin_background">Появится через %1$s</string>
+
+    <string name="symbol_time_seconds">с</string>
+    <string name="symbol_time_minutes">мин</string>
+    <string name="symbol_time_hours">ч</string>
+    <string name="symbol_time_days">д</string>
+
+    <string name="toast_show_all">Показать все записки</string>
+
+    <string name="toast_fix_pins">Закрепить записки</string>
+    <string name="toast_unfix_pins">Разкрепить записки</string>
+
+    <string name="qstile_label">Открыть p!n</string>
+
+</resources>
