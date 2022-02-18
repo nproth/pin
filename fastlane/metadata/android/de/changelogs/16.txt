@@ -1,0 +1,2 @@
+* Russische Übersetzung
+* Mögliche Fehlerbehebung im Quick Settings Tile

@@ -1,0 +1,2 @@
+* Add Russian translation
+* Attempt to fix Quick Settings Tile
