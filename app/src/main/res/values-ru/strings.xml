@@ -10,15 +10,16 @@
 
     <plurals name="notification_summary_title">
         <item quantity="one">%d Записка</item>
-        <item quantity="other">%d Записки</item>
+        <item quantity="few">%d Записки</item>
+        <item quantity="other">%d Записок</item>
     </plurals>
 
     <string name="action_delete">Удалить</string>
-    <string name="action_snooze">Отложить на %1$s</string>
+    <string name="action_snooze">Отложить на %1$с</string>
     <string name="action_edit">Править</string>
 
-    <string name="toast_pin_dismissed">Отложено на %1$s</string>
-    <string name="toast_pin_background">Появится через %1$s</string>
+    <string name="toast_pin_dismissed">Отложено на %1$с</string>
+    <string name="toast_pin_background">Появится через %1$с</string>
 
     <string name="symbol_time_seconds">с</string>
     <string name="symbol_time_minutes">мин</string>
