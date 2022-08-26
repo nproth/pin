@@ -1,0 +1,12 @@
+Minimalistyczna aplikacja do notatek wykorzystująca panel powiadomień twojego telefonu:
+
+<ul>
+<li>Dodawaj notatki do panelu powiadomień</li>
+<li>Edytuj utworzone notatki</li>
+<li>Usuwaj utworzone notatki</li>
+<li>Ukrywaj notatki przez określony czas</li>
+</ul>
+
+Aplikacja została utworzona z myślą o <b>Material Design</b>.
+
+Wszystkie notatki są zapisywane w bazie danych aplikacji i nie są usuwane po restarcie telefonu.
